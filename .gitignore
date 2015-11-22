@@ -1,0 +1,24 @@
+# PyCharm project files
+.idea/
+
+# Python bytecode
+*.pyc
+
+#bad file types
+*.csv
+*.txt
+*.pdf
+*.zip
+
+#hey you can't have my creds
+creds.py
+creds.pyc
+
+# freakin' mac
+.DS_Store
+
+#let me commit requirements.txt
+!requirements.txt
+
+# no vagrant
+.vagrant
