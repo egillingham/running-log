@@ -4,6 +4,7 @@ from werkzeug import exceptions
 
 from website.activity_logs import activities
 
+ACTIVITY_PLACEHOLDER = "Please Pick an Activity"
 
 class AddActivity(Resource):
 
@@ -12,16 +13,17 @@ class AddActivity(Resource):
         self.activities = activities.Activities()
         self._parser = reqparse.RequestParser(bundle_errors=True)
         self._parser.add_argument('activity', type=str, required=True)
-        self._parser.add_argument('datetime', type=str, required=True)
-        self._parser.add_argument('activity_time', type=float, required=True)
+        self._parser.add_argument('datetime', type=str)
+        self._parser.add_argument('activity_time', type=float)
 
     def get(self):
-        template = render_template('add_activity.html', activity_list=self.activities.get_activity_list())
+        activity_list = [ACTIVITY_PLACEHOLDER] + self.activities.get_activity_list()
+        template = render_template('add_activity.html', activity_list=activity_list)
         return make_response(template, 200, self.header)
 
     def post(self):
         try:
-            activity = self._parser.parse_args()
+            activity_info = self._parser.parse_args()
         except exceptions.BadRequest as e:
             err_msgs = []
             err_data = e.data
@@ -29,9 +31,21 @@ class AddActivity(Resource):
                 err = err.strip()
                 err = err.replace(':', '')
                 err_msgs.append('Error with {}: {}'.format(field, err))
-            template = render_template('add_activity.html', error=err_msgs,
-                                       activity_list=self.activities.get_activity_list())
+
+            activity_list = [ACTIVITY_PLACEHOLDER] + self.activities.get_activity_list()
+            template = render_template('add_activity.html', error=err_msgs, activity_list=activity_list)
             return make_response(template, 400, self.header)
 
-        return activity
+        if activity_info.get('activity') == ACTIVITY_PLACEHOLDER:
+            activity_list = [ACTIVITY_PLACEHOLDER] + self.activities.get_activity_list()
+            template = render_template('add_activity.html', activity_list=activity_list)
+            return make_response(template, 200, self.header)
+
+        if not activity_info.get('datetime'):
+            activity_list = [ACTIVITY_PLACEHOLDER] + self.activities.get_activity_list()
+            template = render_template('add_activity.html', activity_list=activity_list,
+                                       activity=activity_info.get('activity'))
+            return make_response(template, 200, self.header)
+
+        return activity_info
 
