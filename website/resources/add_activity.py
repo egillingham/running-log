@@ -6,6 +6,7 @@ from website.activity_logs import activities
 
 ACTIVITY_PLACEHOLDER = "Please Pick an Activity"
 
+
 class AddActivity(Resource):
 
     def __init__(self):
@@ -17,7 +18,7 @@ class AddActivity(Resource):
         self._parser.add_argument('activity_time', type=float)
 
     def get(self):
-        activity_list = [ACTIVITY_PLACEHOLDER] + self.activities.get_activity_list()
+        activity_list = [ACTIVITY_PLACEHOLDER] + self.activities.activity_list
         template = render_template('add_activity.html', activity_list=activity_list)
         return make_response(template, 200, self.header)
 
@@ -32,17 +33,17 @@ class AddActivity(Resource):
                 err = err.replace(':', '')
                 err_msgs.append('Error with {}: {}'.format(field, err))
 
-            activity_list = [ACTIVITY_PLACEHOLDER] + self.activities.get_activity_list()
+            activity_list = [ACTIVITY_PLACEHOLDER] + self.activities.activity_list
             template = render_template('add_activity.html', error=err_msgs, activity_list=activity_list)
             return make_response(template, 400, self.header)
 
         if activity_info.get('activity') == ACTIVITY_PLACEHOLDER:
-            activity_list = [ACTIVITY_PLACEHOLDER] + self.activities.get_activity_list()
+            activity_list = [ACTIVITY_PLACEHOLDER] + self.activities.activity_list
             template = render_template('add_activity.html', activity_list=activity_list)
             return make_response(template, 200, self.header)
 
         if not activity_info.get('datetime'):
-            activity_list = [ACTIVITY_PLACEHOLDER] + self.activities.get_activity_list()
+            activity_list = [ACTIVITY_PLACEHOLDER] + self.activities.activity_list
             template = render_template('add_activity.html', activity_list=activity_list,
                                        activity=activity_info.get('activity'))
             return make_response(template, 200, self.header)
