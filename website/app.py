@@ -2,7 +2,7 @@ from flask import Flask, request, jsonify, render_template, url_for, make_respon
 from flask_restful import Api
 from werkzeug.contrib.fixers import ProxyFix
 
-from resources import adding
+from resources import adding, add_activity
 
 
 APP = Flask(__name__)
@@ -10,6 +10,7 @@ API = Api(APP)
 
 
 API.add_resource(adding.AddNumbers, '/add')
+API.add_resource(add_activity.AddActivity, '/add-activity')
 
 
 @APP.route('/')

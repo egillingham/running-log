@@ -1,0 +1,23 @@
+{% extends "base_layout.html" %}
+{% block body %}
+  <h2>Add Activity</h2>
+  {% if error %}
+    {% for err in error %}
+    <div class="error">{{ err }}</div>
+    {% endfor %}
+  {% endif %}
+  <form action="{{ url_for('addactivity') }}" method=post>
+      <div>Activity:
+            <select name="activity">
+                {% for activity in activity_list %}
+                <option value="{{ activity }}">{{ activity }}</option>
+                {% endfor %}
+            </select>
+      </div>
+      <div>Date Time:
+      <input type=datetime-local name=datetime></div>
+      <div>Activity Time:
+      <input type=number name=activity_time placeholder="in minutes"></div>
+      <div><input type=submit value=Submit></div>
+  </form>
+{% endblock %}

@@ -1,4 +1,5 @@
 {% extends "base_layout.html" %}
 {% block body %}
-  <h2>Hello<a href="{{ url_for('hello') }}">!</a></h2>
+<h2>Hello<a href="{{ url_for('hello') }}">!</a></h2>
+<div>Add an <a href="{{ url_for('addactivity') }}">activity</a></div>
 {% endblock %}

@@ -6,5 +6,16 @@ h1 {
 
 div {
     color: #3B444B;
-    font-size: 12px;
+    font-size: 16px;
+    padding: 10px;
+}
+
+div.error {
+    font-size: 18px;
+    font-weight: bold;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+    border: 2px solid #ff7575;
+    max-width: 500px;
 }
