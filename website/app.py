@@ -2,20 +2,16 @@ from flask import Flask, request, jsonify, render_template, url_for, make_respon
 from flask_restful import Api
 from werkzeug.contrib.fixers import ProxyFix
 
-from resources import adding, add_activity
+from resources import adding, add_activity, homepage
 
 
 APP = Flask(__name__)
 API = Api(APP)
 
 
+API.add_resource(homepage.Homepage, '/')
 API.add_resource(adding.AddNumbers, '/add')
 API.add_resource(add_activity.AddActivity, '/add-activity')
-
-
-@APP.route('/')
-def welcome():
-    return render_template('homepage.html')
 
 
 @APP.route('/hello')
@@ -54,16 +50,10 @@ def otherside():
         '''
 
 
-@APP.route('/patches', methods=['GET', 'POST'])
-def patches():
-    if request.method == 'GET':
-        return "PATCHES"
-
-
 @APP.route("/images/<name>")
 def images(name):
     # fullpath = url_for('static', filename=name)
-    return '<img src=' + url_for('static', filename=name) + '>'
+    return '<img src=' + url_for('static', filename='images/{}'.format(name)) + '>'
 
 
 @APP.errorhandler(adding.InvalidNumber)
