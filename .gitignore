@@ -22,3 +22,6 @@ creds.pyc
 
 # no vagrant
 .vagrant
+
+# ignore images directory
+images
