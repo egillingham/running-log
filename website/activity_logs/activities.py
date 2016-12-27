@@ -1,15 +1,15 @@
 from MySQLdb import connect
 from MySQLdb import cursors
 
-from mysql_query import Query
-from creds import mysql_creds
+from website.utilities.creds import mysql_creds
+from website.utilities.mysql_query import Query
 
 
 class Activities(object):
 
     def __init__(self):
         self.conn = connect(host=mysql_creds['host'], port=mysql_creds['port'], user=mysql_creds['user'],
-                            passwd=mysql_creds['password'], db=mysql_creds['db'], cursorclass=cursors.DictCursor)
+                            passwd=mysql_creds['password'], db='logs', cursorclass=cursors.DictCursor)
         self.activity_lookup = self.get_activity_list()
         self.activity_list = list(self.activity_lookup.values())
 

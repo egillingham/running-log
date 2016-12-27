@@ -62,7 +62,7 @@ class Query(object):
         """
         # max execution time of 10 seconds: avoids query killer and
         # also who wants a query running longer than 10 seconds anyways
-        query = u"SELECT /*+ MAX_EXECUTION_TIME(10000) */ {} FROM {}".format(u', '.join(fields), self.table)
+        query = u"SELECT {} FROM {}".format(u', '.join(fields), self.table)
         if where:
             query = u"{} WHERE {}".format(query, where)
         if order_by:
