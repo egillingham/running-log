@@ -38,6 +38,11 @@ div.error {
     max-width: 500px;
 }
 
+img {
+    max-width: 100%;
+    max-height: 100%;
+}
+
 
 /* Nav Bar styling */
 
@@ -70,4 +75,29 @@ ul.navbar li a {
 /* Change the link color on hover */
 ul.navbar li a:hover {
     background-color: #3a1d35;
+}
+
+/* Card Pic Styling */
+
+div.card {
+    box-shadow: 0px 3px 5px 0px rgba(0,0,0,0.2);
+    /*display: inline-block;*/
+    margin: 0px auto;
+    width: 360px;
+    background-color: #fcfcfc;
+}
+
+div.color {
+    height: 260px;
+    width: 340px;
+    background-color: #3a1d35;
+}
+
+div.card-pic {
+    height: 340px;
+    width: 340px;
+}
+
+div.card-txt {
+    padding: 10px
 }

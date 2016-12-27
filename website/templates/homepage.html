@@ -5,6 +5,8 @@ server-side adding calculator (it only adds) please <a href=" {{ url_for('addnum
 scrolling to learn a bit about me through photos.</div>
 <hr>
 <h2>About Me</h2>
-
-<div>Add an <a href="{{ url_for('addactivity') }}">activity</a></div>
+<div class='card'>
+    <div class='card-pic'><img src="{{ url_for('static', filename='images/erin.jpg') }}"></div>
+    <div class='card-txt'><div>This is me.</div></div>
+</div>
 {% endblock %}
