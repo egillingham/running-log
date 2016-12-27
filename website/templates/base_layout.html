@@ -1,7 +1,18 @@
 <!doctype html>
-<title>Welcome to Erin's Website</title>
-<link rel=stylesheet type=text/css href="{{ url_for('static', filename='style.css') }}">
-<div class=page>
-  <h1>Welcome to Erin's Website</h1>
-  {% block body %}{% endblock %}
-</div>
+<head>
+  <title>The eringillingham.com</title>
+  <link rel=stylesheet type=text/css href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <div class="nav">
+    <ul class="navbar">
+      <li style="font-size: 30px;"><a href="/">The eringillingham.com</a></li>
+      <li><a href="{{ url_for('addactivity') }}">Add Activity</a></li>
+      <li><a href="{{ url_for('addnumbers') }}">Add Some Numbers</a></li>
+      <li><a href="{{ url_for('hello') }}">Hello</a></li>
+    </ul>
+  </div>
+  <div class=page>
+    {% block body %}{% endblock %}
+  </div>
+</body>

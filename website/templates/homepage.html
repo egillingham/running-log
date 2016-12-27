@@ -1,5 +1,10 @@
 {% extends "base_layout.html" %}
 {% block body %}
-<h2>Hello<a href="{{ url_for('hello') }}">!</a></h2>
+<div>Hello<a href="{{ url_for('hello') }}">!</a> I'm Erin Gillingham. If you are looking for the amazing fully-functional
+server-side adding calculator (it only adds) please <a href=" {{ url_for('addnumbers') }}">click here</a>. Otherwise, keep
+scrolling to learn a bit about me through photos.</div>
+<hr>
+<h2>About Me</h2>
+
 <div>Add an <a href="{{ url_for('addactivity') }}">activity</a></div>
 {% endblock %}
