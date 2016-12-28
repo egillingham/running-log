@@ -14,7 +14,7 @@ class AddActivity(Resource):
         self.activities = activities.Activities()
         self._parser = reqparse.RequestParser(bundle_errors=True)
         self._parser.add_argument('activity', type=str, required=True)
-        self._parser.add_argument('datetime', type=str)
+        self._parser.add_argument('date', type=str)
         self._parser.add_argument('activity_time', type=float)
 
     def get(self):
@@ -42,11 +42,22 @@ class AddActivity(Resource):
             template = render_template('add_activity.html', activity_list=activity_list)
             return make_response(template, 200, self.header)
 
-        if not activity_info.get('datetime'):
+        if not activity_info.get('date'):
             activity_list = [ACTIVITY_PLACEHOLDER] + self.activities.activity_list
             template = render_template('add_activity.html', activity_list=activity_list,
                                        activity=activity_info.get('activity'))
             return make_response(template, 200, self.header)
 
-        return activity_info
+        success = self.activities.add_activity(activity_info)
 
+        if success:
+            message = "Successfully added activity"
+            activity_list = [ACTIVITY_PLACEHOLDER] + self.activities.activity_list
+            template = render_template('add_activity.html', alert=message, activity_list=activity_list)
+            return make_response(template, 400, self.header)
+
+        else:
+            err_msgs = "Failed to add activity"
+            activity_list = [ACTIVITY_PLACEHOLDER] + self.activities.activity_list
+            template = render_template('add_activity.html', error=err_msgs, activity_list=activity_list)
+            return make_response(template, 400, self.header)

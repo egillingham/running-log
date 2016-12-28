@@ -6,6 +6,9 @@
     <div class="error">{{ err }}</div>
     {% endfor %}
   {% endif %}
+  {% if alert %}
+  <div class="success">{{ alert }}</div>
+  {% endif %}
   <form action="{{ url_for('addactivity') }}" method=post>
       <div>Activity:
             <select name="activity" onchange="this.form.submit()">
@@ -21,7 +24,7 @@
           <legend>{{ activity }}:</legend>
           <input type=hidden name=activity value="{{ activity }}">
           <div>Date Time:
-          <input type=datetime-local name=datetime></div>
+          <input type=datetime-local name=date></div>
           <div>Activity Time:
           <input type=number name=activity_time placeholder="in minutes"></div>
           <div><input type=submit value=Submit></div>
