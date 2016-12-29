@@ -1,6 +1,5 @@
-from flask import render_template, make_response
-from flask_restful import Resource, reqparse
-from werkzeug import exceptions
+from flask import render_template, make_response, request
+from flask_restful import Resource
 
 from website.activity_logs import activities
 
@@ -12,10 +11,6 @@ class AddActivity(Resource):
     def __init__(self):
         self.header = {'Content-Type': 'text/html'}
         self.activities = activities.Activities()
-        self._parser = reqparse.RequestParser(bundle_errors=True)
-        self._parser.add_argument('activity', type=str, required=True)
-        self._parser.add_argument('date', type=str)
-        self._parser.add_argument('activity_time', type=float)
 
     def get(self):
         activity_list = [ACTIVITY_PLACEHOLDER] + self.activities.activity_list
@@ -23,19 +18,23 @@ class AddActivity(Resource):
         return make_response(template, 200, self.header)
 
     def post(self):
-        try:
-            activity_info = self._parser.parse_args()
-        except exceptions.BadRequest as e:
-            err_msgs = []
-            err_data = e.data
-            for field, err in err_data['message'].items():
-                err = err.strip()
-                err = err.replace(':', '')
-                err_msgs.append('Error with {}: {}'.format(field, err))
-
-            activity_list = [ACTIVITY_PLACEHOLDER] + self.activities.activity_list
-            template = render_template('add_activity.html', error=err_msgs, activity_list=activity_list)
-            return make_response(template, 400, self.header)
+        if request.form:
+            param = request.form
+            # to dict "flattens" the form- may lose a value if duplicate keys. Not really sure how that would happen.
+            # (source: http://werkzeug.pocoo.org/docs/0.11/datastructures/#werkzeug.datastructures.MultiDict.to_dict)
+            activity_info = param.to_dict()
+            if not activity_info:
+                activity_list = [ACTIVITY_PLACEHOLDER] + self.activities.activity_list
+                error = 'Error sending activity info'
+                template = render_template('add_activity.html', error=error, activity_list=activity_list)
+                return make_response(template, 400, self.header)
+        else:
+            try:
+                activity_info = request.get_json(force=True)
+            except Exception as e:
+                activity_list = [ACTIVITY_PLACEHOLDER] + self.activities.activity_list
+                template = render_template('add_activity.html', error=e.message, activity_list=activity_list)
+                return make_response(template, 400, self.header)
 
         if activity_info.get('activity') == ACTIVITY_PLACEHOLDER:
             activity_list = [ACTIVITY_PLACEHOLDER] + self.activities.activity_list
