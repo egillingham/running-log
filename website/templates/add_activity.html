@@ -21,12 +21,42 @@
 {% if activity %}
   <form action="{{ url_for('addactivity') }}" method=post>
       <fieldset>
-          <legend>{{ activity }}:</legend>
+          <legend>General:</legend>
           <input type=hidden name=activity value="{{ activity }}">
-          <div>Date Time:
-          <input type=datetime-local name=date></div>
-          <div>Activity Time:
-          <input type=number name=activity_time placeholder="in minutes"></div>
+          {% for form_field in general_fields %}
+          {% if form_field.form_type == 'select' %}
+          <div>{{ form_field.display_name }}
+            <select name="{{ form_field.field }}">
+                {% for value in form_field.form_value %}
+                <option value="{{ value }}">{{ value }}</option>
+                {% endfor %}
+            </select>
+          </div>
+          {% else %}
+          <div>{{ form_field.display_name }}
+          <input type="{{ form_field.form_type }}" name="{{ form_field.field }}" value="{{ form_field.form_value }}"
+                 placeholder="{{ form_field.placeholder }}"></div>
+          {% endif %}
+          {% endfor %}
+          <div><input type=submit value=Submit></div>
+      </fieldset>
+      <fieldset>
+          <legend>{{ activity }}:</legend>
+          {% for form_field in activity_fields %}
+          {% if form_field.form_type == 'select' %}
+          <div>{{ form_field.display_name }}
+            <select name="{{ form_field.field }}">
+                {% for value in form_field.form_value %}
+                <option value="{{ value }}">{{ value }}</option>
+                {% endfor %}
+            </select>
+          </div>
+          {% else %}
+          <div>{{ form_field.display_name }}
+          <input type="{{ form_field.form_type }}" name="{{ form_field.field }}" value="{{ form_field.form_value }}"
+                 placeholder="{{ form_field.placeholder }}"></div>
+          {% endif %}
+          {% endfor %}
           <div><input type=submit value=Submit></div>
       </fieldset>
   </form>

@@ -26,14 +26,14 @@ class AddActivity(Resource):
             if not activity_info:
                 activity_list = [ACTIVITY_PLACEHOLDER] + self.activities.activity_list
                 error = 'Error sending activity info'
-                template = render_template('add_activity.html', error=error, activity_list=activity_list)
+                template = render_template('add_activity.html', error=[error], activity_list=activity_list)
                 return make_response(template, 400, self.header)
         else:
             try:
                 activity_info = request.get_json(force=True)
             except Exception as e:
                 activity_list = [ACTIVITY_PLACEHOLDER] + self.activities.activity_list
-                template = render_template('add_activity.html', error=e.message, activity_list=activity_list)
+                template = render_template('add_activity.html', error=[e.message], activity_list=activity_list)
                 return make_response(template, 400, self.header)
 
         if activity_info.get('activity') == ACTIVITY_PLACEHOLDER:
@@ -43,10 +43,13 @@ class AddActivity(Resource):
 
         if not activity_info.get('date'):
             activity_list = [ACTIVITY_PLACEHOLDER] + self.activities.activity_list
+            general_fields, run_fields = self.activities.get_run_fields()
             template = render_template('add_activity.html', activity_list=activity_list,
-                                       activity=activity_info.get('activity'))
+                                       activity=activity_info.get('activity'),
+                                       general_fields=general_fields, activity_fields=run_fields)
             return make_response(template, 200, self.header)
 
+        #success = True
         success = self.activities.add_activity(activity_info)
 
         if success:
@@ -58,5 +61,5 @@ class AddActivity(Resource):
         else:
             err_msgs = "Failed to add activity"
             activity_list = [ACTIVITY_PLACEHOLDER] + self.activities.activity_list
-            template = render_template('add_activity.html', error=err_msgs, activity_list=activity_list)
+            template = render_template('add_activity.html', error=[err_msgs], activity_list=activity_list)
             return make_response(template, 400, self.header)
