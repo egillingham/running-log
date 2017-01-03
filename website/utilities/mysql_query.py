@@ -191,6 +191,7 @@ class Query(object):
         fields = u'({})'.format(u', '.join(ft))
 
         query = u"INSERT INTO {} {} VALUES {} ON DUPLICATE KEY UPDATE {}".format(self.table, fields, values, update)
+        print query
         self.execute_query(query)
 
     def insert(self, data):
@@ -230,7 +231,10 @@ class Query(object):
                 if value:
                     if isinstance(value, datetime.datetime):
                         value = u'"{}"'.format(value.strftime('%Y-%m-%d %H:%M:%S'))
+                    elif isinstance(value, list):
+                        value = u'^'.join(value)
                     elif info.get('type') in self.STRING_TYPES:
+                        value = unicode(value)
                         value = value.replace('"', "'")
                         value = u'"{}"'.format(value.encode('utf-8'))
                     elif info.get('type') in self.NUMBER_TYPES:
