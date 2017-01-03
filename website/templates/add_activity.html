@@ -34,11 +34,14 @@
           </div>
           {% else %}
           <div>{{ form_field.display_name }}
-          <input type="{{ form_field.form_type }}" name="{{ form_field.field }}" value="{{ form_field.form_value }}"
-                 placeholder="{{ form_field.placeholder }}"></div>
+          <input type="{{ form_field.form_type }}"
+                 name="{{ form_field.field }}"
+                 {% if form_field.form_value %} value="{{ form_field.form_value }}" {% endif %}
+                 {% if form_field.placeholder %} placeholder="{{ form_field.placeholder }}" {% endif %}
+                 {% if form_field.form_type == 'number' %} step="any" {% endif %}
+          ></div>
           {% endif %}
           {% endfor %}
-          <div><input type=submit value=Submit></div>
       </fieldset>
       <fieldset>
           <legend>{{ activity }}:</legend>
@@ -53,8 +56,12 @@
           </div>
           {% else %}
           <div>{{ form_field.display_name }}
-          <input type="{{ form_field.form_type }}" name="{{ form_field.field }}" value="{{ form_field.form_value }}"
-                 placeholder="{{ form_field.placeholder }}"></div>
+          <input type="{{ form_field.form_type }}"
+                 name="{{ form_field.field }}"
+                 {% if form_field.form_value %} value="{{ form_field.form_value }}" {% endif %}
+                 {% if form_field.placeholder %} placeholder="{{ form_field.placeholder }}" {% endif %}
+                 {% if form_field.form_type == 'number' %} step="any" {% endif %}
+          ></div>
           {% endif %}
           {% endfor %}
           <div><input type=submit value=Submit></div>
