@@ -1,6 +1,5 @@
 from MySQLdb import connect
 from MySQLdb import cursors
-from collections import OrderedDict
 
 from website.utilities.creds import mysql_creds
 from website.utilities.mysql_query import Query
@@ -9,6 +8,9 @@ FIELD_INFO_TABLE = 'field_info'
 KEY_VALUE_TABLE = 'key_values'
 ACTIVITY_LOG_TABLE = 'activity_log'
 RUNNING_LOG_TABLE = 'running_log'
+YOGA_LOG_TABLE = 'yoga_log'
+BIKE_LOG_TABLE = 'bike_log'
+SWIM_LOG_TABLE = 'swim_log'
 
 
 class Activities(object):
@@ -55,10 +57,10 @@ class Activities(object):
             # add field to insert fields list, to be set to the class to be used later if needed
             insert_fields.append(field.get('field'))
             # for the rest: ignore fields that have been seen or don't have a form order (aren't in form yet)
-            if field in seen_list or not field.get('form_order'):
+            if field.get('field') in seen_list or not field.get('form_order'):
                 continue
 
-            seen_list.append(field)
+            seen_list.append(field.get('field'))
             if field.get('normalized'):
                 # if field is normalized, get the list of values from key values table
                 values = self.get_key_value_pair(field.get('field'))
@@ -82,6 +84,21 @@ class Activities(object):
         general_fields, seen_list = self.get_form_fields(ACTIVITY_LOG_TABLE)
         run_fields, seen_list2 = self.get_form_fields(RUNNING_LOG_TABLE, seen_list)
         return general_fields, run_fields
+
+    def get_yoga_fields(self):
+        general_fields, seen_list = self.get_form_fields(ACTIVITY_LOG_TABLE)
+        yoga_fields, seen_list2 = self.get_form_fields(YOGA_LOG_TABLE, seen_list)
+        return general_fields, yoga_fields
+
+    def get_bike_fields(self):
+        general_fields, seen_list = self.get_form_fields(ACTIVITY_LOG_TABLE)
+        bike_fields, seen_list2 = self.get_form_fields(BIKE_LOG_TABLE, seen_list)
+        return general_fields, bike_fields
+
+    def get_swim_fields(self):
+        general_fields, seen_list = self.get_form_fields(ACTIVITY_LOG_TABLE)
+        swim_fields, seen_list2 = self.get_form_fields(SWIM_LOG_TABLE, seen_list)
+        return general_fields, swim_fields
 
     def add_activity(self, activity_info):
         # write to activity log
@@ -109,5 +126,45 @@ class Activities(object):
                 run_log_data['terrain'] = terrain_lookup[run_log_data['terrain']]
             query = Query(self.conn, RUNNING_LOG_TABLE)
             query.insert_update([run_log_data])
+
+        elif activity == 2:
+            # write to swim log
+            swim_fields = self.fields_lists.get(SWIM_LOG_TABLE, self.get_fields(SWIM_LOG_TABLE))
+            swim_log_data = {k: v for (k, v) in activity_info.items() if k in swim_fields}
+            # if no swim data, return
+            if not swim_log_data or not swim_log_data.get('date'):
+                return False
+            # change water_type back to keys
+            if swim_log_data.get('water_type'):
+                water_type = self.get_key_value_pair('water_type')
+                water_type_lookup = {row.get('field_value'): int(row.get('field_key')) for row in water_type}
+                swim_log_data['terrain'] = water_type_lookup[swim_log_data['terrain']]
+            query = Query(self.conn, SWIM_LOG_TABLE)
+            query.insert_update([swim_log_data])
+
+        elif activity == 3:
+            # write to bike log
+            bike_fields = self.fields_lists.get(BIKE_LOG_TABLE, self.get_fields(BIKE_LOG_TABLE))
+            bike_log_data = {k: v for (k, v) in activity_info.items() if k in bike_fields}
+            # if no activity data, return
+            if not bike_log_data or not bike_log_data.get('date'):
+                return False
+            # change terrain back to keys
+            if bike_log_data.get('terrain'):
+                terrain = self.get_key_value_pair('terrain')
+                terrain_lookup = {row.get('field_value'): int(row.get('field_key')) for row in terrain}
+                bike_log_data['terrain'] = terrain_lookup[bike_log_data['terrain']]
+            query = Query(self.conn, BIKE_LOG_TABLE)
+            query.insert_update([bike_log_data])
+
+        elif activity == 4:
+            # write to yoga log
+            yoga_fields = self.fields_lists.get(YOGA_LOG_TABLE, self.get_fields(YOGA_LOG_TABLE))
+            yoga_log_data = {k: v for (k, v) in activity_info.items() if k in yoga_fields}
+            # if no activity data, return
+            if not yoga_log_data or not yoga_log_data.get('date'):
+                return False
+            query = Query(self.conn, YOGA_LOG_TABLE)
+            query.insert_update([yoga_log_data])
 
         return True

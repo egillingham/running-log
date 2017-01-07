@@ -43,13 +43,25 @@ class AddActivity(Resource):
 
         if not activity_info.get('date'):
             activity_list = [ACTIVITY_PLACEHOLDER] + self.activities.activity_list
-            general_fields, run_fields = self.activities.get_run_fields()
+            activity = self.activities.activity_lookup.get(activity_info.get('activity'), None)
+            if activity == 1:
+                general_fields, run_fields = self.activities.get_run_fields()
+            elif activity == 2:
+                general_fields, run_fields = self.activities.get_swim_fields()
+            elif activity == 3:
+                general_fields, run_fields = self.activities.get_bike_fields()
+            elif activity == 4:
+                general_fields, run_fields = self.activities.get_yoga_fields()
+            else:
+                message = 'No field options exist for {}'.format(activity_info.get('activity'))
+                template = render_template('add_activity.html', error=[message], activity_list=activity_list)
+                return make_response(template, 400, self.header)
+
             template = render_template('add_activity.html', activity_list=activity_list,
                                        activity=activity_info.get('activity'),
                                        general_fields=general_fields, activity_fields=run_fields)
             return make_response(template, 200, self.header)
 
-        #success = True
         success = self.activities.add_activity(activity_info)
 
         if success:

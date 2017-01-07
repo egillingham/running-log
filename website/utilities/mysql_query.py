@@ -191,7 +191,6 @@ class Query(object):
         fields = u'({})'.format(u', '.join(ft))
 
         query = u"INSERT INTO {} {} VALUES {} ON DUPLICATE KEY UPDATE {}".format(self.table, fields, values, update)
-        print query
         self.execute_query(query)
 
     def insert(self, data):
