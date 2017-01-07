@@ -65,7 +65,7 @@ def handle_invalid_number(error):
 
 if __name__ == '__main__':
     print "In __main__, running host..."
-    APP.run(host='0.0.0.0', debug=True)
+    APP.run(host='0.0.0.0', port=5005, debug=True)
 
 elif __name__ == 'app':
     # when we run using gunicorn
