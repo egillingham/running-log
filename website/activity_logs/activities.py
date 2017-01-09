@@ -138,7 +138,7 @@ class Activities(object):
             if swim_log_data.get('water_type'):
                 water_type = self.get_key_value_pair('water_type')
                 water_type_lookup = {row.get('field_value'): int(row.get('field_key')) for row in water_type}
-                swim_log_data['terrain'] = water_type_lookup[swim_log_data['terrain']]
+                swim_log_data['water_type'] = water_type_lookup[swim_log_data['water_type']]
             query = Query(self.conn, SWIM_LOG_TABLE)
             query.insert_update([swim_log_data])
 
