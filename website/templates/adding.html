@@ -1,0 +1,11 @@
+{% extends "base_layout.html" %}
+{% block body %}
+<h2>Add two numbers!</h2>
+{% if error %}<div class="error">{{ error }}</div>{% endif %}
+{% if alert %}<div class="success">{{ alert }}</div>{% endif %}
+<form action="" method=post enctype=application/x-www-form-urlencoded>
+    <div><input type="text" name="num1"></div>
+    <div><input type="text" name="num2"></div>
+    <div><input type=submit value="Add!"></div>
+</form>
+{% endblock %}
