@@ -10,7 +10,11 @@
       <li><a href="{{ url_for('addactivity') }}">Add Activity</a></li>
       <li><a href="{{ url_for('addnumbers') }}">Add Some Numbers</a></li>
       <li><a href="{{ url_for('hello') }}">Hello</a></li>
+      {% if session.username %}
+      <li style="float: right"><a href="{{ url_for('logout') }}">Logged in as Erin</a></li>
+      {% else %}
       <li style="float: right"><a href="{{ url_for('login') }}">Login</a></li>
+      {% endif %}
     </ul>
   </div>
   <div class=page>

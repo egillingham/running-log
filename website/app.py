@@ -1,12 +1,8 @@
-from flask import Flask, jsonify, url_for, request
+from flask import Flask, jsonify, url_for, request, session
 from flask_restful import Api
 from werkzeug.contrib.fixers import ProxyFix
 
-from website.blog_management.User import User
 from resources import adding, add_activity, homepage, user_login
-from flask_httpauth import HTTPBasicAuth
-
-auth = HTTPBasicAuth()
 
 
 APP = Flask(__name__)
@@ -17,18 +13,11 @@ API.add_resource(homepage.Homepage, '/')
 API.add_resource(adding.AddNumbers, '/add')
 API.add_resource(add_activity.AddActivity, '/add-activity')
 API.add_resource(user_login.Login, '/login')
-
-
-@auth.verify_password
-def verify_pw(username, password):
-    user = User(username, password, None)
-    return user.check_if_user_exists()
+API.add_resource(user_login.Logout, '/logout')
 
 
 @APP.route('/hello')
-@auth.login_required
 def hello():
-    r = request
     return '''
         <!doctype html>
         <title>Add two numbers!</title>
@@ -78,6 +67,7 @@ def handle_invalid_number(error):
 
 if __name__ == '__main__':
     print "In __main__, running host..."
+    APP.secret_key = 'secret_test'
     APP.run(host='0.0.0.0', port=5005, debug=True)
 
 elif __name__ == 'app':
