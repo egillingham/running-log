@@ -116,3 +116,34 @@ div.card-pic {
 div.card-txt {
     padding: 10px;
 }
+
+/* LET THE CHARTING BEGIN */
+
+.bar:hover {
+   stroke:#79858e;
+   stroke-width:0.75
+}
+
+div.legend {
+  margin: 0px 0px 0px 40px;
+  position: relative;
+}
+
+div.legend-item {
+  display: inline-block;
+  padding: 6px;
+}
+
+div.legend-txt {
+  display: inline-block;
+  padding-left: 3px;
+}
+
+div.legend-icon {
+    width: 8px;
+    height: 8px;
+    border: 2px transparent solid;
+    display: inline-block;
+    vertical-align: middle;
+    padding: 0px 0px 0px 0px;
+}

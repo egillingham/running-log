@@ -35,6 +35,19 @@ class Activities(object):
 
         return activity_lookup
 
+    def get_activities(self):
+        query = Query(self.conn, ACTIVITY_LOG_TABLE)
+        select_query = '''select day as date, r.run, b.bike, s.swim, y.yoga
+        from (select CONCAT(DATE(date), ' 00:00:00') as day from activity_log group by day) as a
+        left join (select date, minutes as run from running_log) as r on day = CONCAT(DATE(r.date), ' 00:00:00')
+        left join (select date, minutes as bike from bike_log) as b on day = CONCAT(DATE(b.date), ' 00:00:00')
+        left join (select date, minutes as swim from swim_log) as s on day = CONCAT(DATE(s.date), ' 00:00:00')
+        left join (select date, minutes as yoga from yoga_log) as y on day = CONCAT(DATE(y.date), ' 00:00:00')
+        where day > DATE_SUB(CURDATE(), INTERVAL 1 WEEK);
+        '''
+        data = query.select_query(select_query)
+        return data
+
     def get_fields(self, table):
         query = Query(self.conn, FIELD_INFO_TABLE)
         field_info_fields = ['field']
