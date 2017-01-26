@@ -25,7 +25,7 @@ h2 {
 div {
     color: #3B444B;
     font-size: 16px;
-    padding: 10px;
+    padding: 5px 10px 5px 10px;
 }
 
 div.error {
