@@ -1,7 +1,7 @@
 from flask import render_template, make_response, request, session
 from flask_restful import Resource
 
-from website.activity_logs import activities
+from activity_logs import activities
 
 ACTIVITY_PLACEHOLDER = "Please Pick an Activity"
 

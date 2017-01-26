@@ -1,8 +1,8 @@
 from MySQLdb import connect
 from MySQLdb import cursors
 
-from website.utilities.creds import mysql_creds
-from website.utilities.mysql_query import Query
+from utilities.creds import mysql_creds
+from utilities.mysql_query import Query
 
 FIELD_INFO_TABLE = 'field_info'
 KEY_VALUE_TABLE = 'key_values'

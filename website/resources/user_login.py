@@ -1,7 +1,7 @@
 from flask import render_template, make_response, request, session, flash
 from flask_restful import Resource
 
-from website.blog_management.User import User, UserException
+from blog_management.User import User, UserException
 
 
 class Login(Resource):

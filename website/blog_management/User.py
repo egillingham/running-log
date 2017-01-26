@@ -2,8 +2,8 @@ from MySQLdb import connect
 from MySQLdb import cursors
 from passlib.apps import custom_app_context as pwd_context
 
-from website.utilities.creds import mysql_creds
-from website.utilities.mysql_query import Query
+from utilities.creds import mysql_creds
+from utilities.mysql_query import Query
 
 
 class User(object):

@@ -1,7 +1,7 @@
 from MySQLdb import connect, cursors
 
-from website.utilities.creds import mysql_creds
-from website.utilities.mysql_query import Query
+from utilities.creds import mysql_creds
+from utilities.mysql_query import Query
 
 
 def get_image_cards():

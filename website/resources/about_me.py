@@ -1,7 +1,7 @@
 from flask_restful import Resource, request
 from flask import render_template, make_response
 
-from website.blog_management import image_cards
+from blog_management import image_cards
 
 
 class Hello(Resource):

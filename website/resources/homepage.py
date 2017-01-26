@@ -1,7 +1,7 @@
 from flask import render_template, make_response
 from flask_restful import Resource
 
-from website.activity_logs import activities
+from activity_logs import activities
 
 
 class Homepage(Resource):
