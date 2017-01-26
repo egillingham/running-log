@@ -19,13 +19,13 @@ class Login(Resource):
             return make_response(template, 400, self.header)
 
         user_info = request.form
-        user = User(user_info.get('username'), user_info.get('password'), user_info.get('name'))
+        user = User(user_info.get('username'))
         try:
             user.validate_user_info()
         except UserException as e:
             template = render_template('login.html', error=e.message)
             return make_response(template, 400, self.header)
-        match = user.check_if_user_exists()
+        match = user.check_if_authenticated_user(user_info.get('password'))
         if not match:
             template = render_template('login.html', error='Could not login, check username and password')
             return make_response(template, 400, self.header)

@@ -10,7 +10,7 @@ class User(object):
 
     USER_TABLE = 'users'
 
-    def __init__(self, username, password, name):
+    def __init__(self, username, password='', name=None):
         self.conn = connect(host=mysql_creds['host'], port=mysql_creds['port'], user=mysql_creds['user'],
                             passwd=mysql_creds['password'], db='blog', cursorclass=cursors.DictCursor)
         self.id = None
@@ -42,8 +42,9 @@ class User(object):
 
     def get_user_by_username(self):
         query = Query(self.conn, self.USER_TABLE)
-        rows = query.select(['id'], where='username = "{}"'.format(self.username))
+        rows = query.select(['id', 'password', 'username'], where='username = "{}"'.format(self.username))
         user_info = next(rows, [])
+        self.hash_pass = user_info.get('password')
         return user_info
 
     def check_if_user_exists(self):
@@ -51,6 +52,15 @@ class User(object):
         if user:
             return True
         return False
+
+    def check_if_authenticated_user(self, password):
+        valid = False
+        user = self.get_user_by_username()
+        if user.get('id'):
+            valid_pwd = self.verify_password(password)
+            if valid_pwd:
+                valid = True
+        return valid
 
     def verify_password(self, password):
         return pwd_context.verify(password, self.hash_pass)
