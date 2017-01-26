@@ -9,6 +9,7 @@
 *.txt
 *.pdf
 *.zip
+*.log
 
 #hey you can't have my creds
 creds.py
