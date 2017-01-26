@@ -7,3 +7,12 @@ services:
       - MYSQL_ROOT_PASSWORD=root
     ports:
       - 3306:3306
+
+  runninglog:
+    image: egillingham/running-log
+    ports:
+      - 5050:5050
+    volumes:
+      - /Users/erin/Documents/personal-dev/running-log:/var/log/gunicorn
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
