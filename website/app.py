@@ -1,7 +1,11 @@
-from flask import Flask, url_for
+from flask import Flask, url_for, render_template
 from flask_restful import Api
 from werkzeug.contrib.fixers import ProxyFix
 
+# errors to catch
+from MySQLdb import OperationalError
+
+# resources to load
 from resources import adding, add_activity, homepage, user_login, about_me
 
 
@@ -21,6 +25,18 @@ API.add_resource(about_me.Hello, '/hello')
 def images(name):
     # fullpath = url_for('static', filename=name)
     return '<img src=' + url_for('static', filename='images/{}'.format(name)) + '>'
+
+
+@APP.errorhandler(OperationalError)
+def mysql_conn_exception(e):
+    error_msg = "Most likely a database connection issue"
+    return render_template('500.html', error=error_msg), 500
+
+
+@APP.errorhandler(500)
+def internal_server_error(error):
+    error_msg = "Erin did something bad, blame her entirely"
+    return render_template('500.html', error=error_msg), 500
 
 
 if __name__ == '__main__':
