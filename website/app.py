@@ -1,3 +1,4 @@
+import os
 from flask import Flask, url_for, render_template
 from flask_restful import Api
 from werkzeug.contrib.fixers import ProxyFix
@@ -47,4 +48,5 @@ if __name__ == '__main__':
 elif __name__ == 'app':
     # when we run using gunicorn
     print "WSGI setup..."
+    APP.secret_key = os.environ.get('FLASK_SECRET')
     APP.wsgi_app = ProxyFix(APP.wsgi_app)

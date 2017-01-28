@@ -3,10 +3,11 @@ version: "2"
 services:
   mysql:
     image: mysql
-    environment:
-      - MYSQL_ROOT_PASSWORD=root
     ports:
       - 3306:3306
+    # env file holds MYSQL_ROOT_PASSWORD needed for mysql start
+    env_file:
+      - running-log.env
 
   runninglog:
     image: egillingham/running-log
@@ -14,5 +15,6 @@ services:
       - 5050:5050
     volumes:
       - /Users/erin/Documents/personal-dev/running-log:/var/log/gunicorn
-    environment:
-      - MYSQL_ROOT_PASSWORD=root
+    # env file holds MYSQL_ROOT_PASSWORD (mysql connection) and FLASK_SECRET (used to sign session data)
+    env_file:
+      - running-log.env
