@@ -1,6 +1,6 @@
 import os
 from flask import Flask, url_for, render_template
-from flask_restful import Api
+from flask_restful import Api, HTTPException
 from werkzeug.contrib.fixers import ProxyFix
 
 # errors to catch
@@ -11,7 +11,21 @@ from resources import adding, add_activity, homepage, user_login, about_me
 
 
 APP = Flask(__name__)
-API = Api(APP)
+
+
+class MyApi(Api):
+    def handle_error(self, e):
+        code = getattr(e, 'code', 500)
+        if code == 500:      # for HTTP 500 errors return my custom response
+            error_msg = "Erin did something wrong. Please grab a pitchfork and run her out of town."
+            return render_template('500.html', error=error_msg), 500
+        elif code == 404:
+            error_msg = "This page doesn't exist yet silly. Send Erin a venmo if it's something you really want to see."
+            return render_template('404.html', error=error_msg), 404
+        return super(MyApi, self).handle_error(e)
+
+
+API = MyApi(APP, catch_all_404s=True)
 
 
 API.add_resource(homepage.Homepage, '/')
@@ -28,22 +42,10 @@ def images(name):
     return '<img src=' + url_for('static', filename='images/{}'.format(name)) + '>'
 
 
-@APP.errorhandler(OperationalError)
-def mysql_conn_exception(e):
-    error_msg = "Most likely a database connection issue"
-    return render_template('500.html', error=error_msg), 500
-
-
-@APP.errorhandler(500)
-def internal_server_error(error):
-    error_msg = "Erin did something bad, blame her entirely"
-    return render_template('500.html', error=error_msg), 500
-
-
 if __name__ == '__main__':
     print "In __main__, running host..."
     APP.secret_key = 'secret_test'
-    APP.run(host='0.0.0.0', port=5005, debug=True)
+    APP.run(host='0.0.0.0', port=5005, debug=False)
 
 elif __name__ == 'app':
     # when we run using gunicorn

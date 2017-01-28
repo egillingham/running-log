@@ -38,6 +38,10 @@ div.error {
     max-width: 500px;
 }
 
+div.error-http-msg {
+    text-align: center;
+}
+
 div.success {
     font-size: 18px;
     font-weight: bold;
