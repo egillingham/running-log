@@ -10,6 +10,7 @@
 *.pdf
 *.zip
 *.log
+*.env
 
 #hey you can't have my creds
 creds.py
