@@ -72,13 +72,13 @@ function stackedBar(data, base_class, tot_height, tot_width) {
     // AXIS
     g.append("g")
         .attr("class", "y-axis")
-        .call(d3.axisLeft(y).ticks(4));
-
-    g.append("text")
+        .call(d3.axisLeft(y).ticks(4))
+     .append("text")
         .attr("transform", "rotate(-90)")
         .attr("y", 6)
         .attr("dy", ".71em")
         .style("text-anchor", "end")
+        .attr("fill", '#000')
         .text("Minutes of Activity");
 
     g.append('g')
