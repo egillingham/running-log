@@ -43,7 +43,7 @@ class Activities(object):
         left join (select date, minutes as bike from bike_log) as b on day = CONCAT(DATE(b.date), ' 00:00:00')
         left join (select date, minutes as swim from swim_log) as s on day = CONCAT(DATE(s.date), ' 00:00:00')
         left join (select date, minutes as yoga from yoga_log) as y on day = CONCAT(DATE(y.date), ' 00:00:00')
-        where day > DATE_SUB(CURDATE(), INTERVAL 1 WEEK);
+        where day >= DATE_SUB(CURDATE(), INTERVAL 1 WEEK);
         '''
         data = query.select_query(select_query)
         return data
