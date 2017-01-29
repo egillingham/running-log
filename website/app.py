@@ -1,10 +1,7 @@
 import os
 from flask import Flask, url_for, render_template
-from flask_restful import Api, HTTPException
+from flask_restful import Api
 from werkzeug.contrib.fixers import ProxyFix
-
-# errors to catch
-from MySQLdb import OperationalError
 
 # resources to load
 from resources import adding, add_activity, homepage, user_login, about_me
@@ -13,7 +10,7 @@ from resources import adding, add_activity, homepage, user_login, about_me
 APP = Flask(__name__)
 
 
-class MyApi(Api):
+class RunningLogApi(Api):
     def handle_error(self, e):
         code = getattr(e, 'code', 500)
         if code == 500:      # for HTTP 500 errors return my custom response
@@ -22,10 +19,10 @@ class MyApi(Api):
         elif code == 404:
             error_msg = "This page doesn't exist yet silly. Send Erin a venmo if it's something you really want to see."
             return render_template('404.html', error=error_msg), 404
-        return super(MyApi, self).handle_error(e)
+        return super(RunningLogApi, self).handle_error(e)
 
 
-API = MyApi(APP, catch_all_404s=True)
+API = RunningLogApi(APP, catch_all_404s=True)
 
 
 API.add_resource(homepage.Homepage, '/')
