@@ -1,0 +1,8 @@
+# Docker Upstart and SysVinit configuration file
+
+# Use DOCKER_OPTS to modify the daemon startup options.
+{% if storage_driver_aufs %}
+DOCKER_OPTS="--storage-driver=aufs --log-opt max-size={{ max_size }} --log-opt max-file={{ max_file }}"
+{% else %}
+DOCKER_OPTS="--log-opt max-size={{ max_size }} --log-opt max-file={{ max_file }}"
+{% endif %}
