@@ -1,6 +1,7 @@
 import os
 from flask import Flask, url_for, render_template
 from flask_restful import Api
+from flask_sitemap import Sitemap
 from werkzeug.contrib.fixers import ProxyFix
 
 # resources to load
@@ -8,6 +9,7 @@ from resources import adding, add_activity, homepage, user_login, about_me
 
 
 APP = Flask(__name__)
+ext = Sitemap(app=APP)
 
 
 class RunningLogApi(Api):
@@ -37,6 +39,9 @@ API.add_resource(about_me.Hello, '/hello')
 def images(name):
     # fullpath = url_for('static', filename=name)
     return '<img src=' + url_for('static', filename='images/{}'.format(name)) + '>'
+
+
+APP.config['SITEMAP_INCLUDE_RULES_WITHOUT_PARAMS'] = True
 
 
 if __name__ == '__main__':

@@ -118,7 +118,7 @@ ul.navbar.footer li {
 
 /* change the link color on hover */
 ul.navbar.footer li a:hover {
-    background-color: #3a1d35;
+    color: #3a1d35;
 }
 
 /* Card Pic Styling */
