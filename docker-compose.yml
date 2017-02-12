@@ -12,9 +12,9 @@ services:
   runninglog:
     image: egillingham/running-log
     ports:
-      - 5050:5050
+      - 80:5050
     volumes:
-      - /Users/erin/Documents/personal-dev/running-log:/var/log/gunicorn
+      - /var/log/gunicorn:/var/log/gunicorn
     # env file holds MYSQL_ROOT_PASSWORD (mysql connection) and FLASK_SECRET (used to sign session data)
     env_file:
       - running-log.env
