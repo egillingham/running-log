@@ -6,8 +6,8 @@
   <script src="{{ url_for('static', filename='stacked_bar.js') }}"></script>
 </head>
 <body>
-  <div class="nav">
-    <ul class="navbar">
+  <div class="head">
+    <ul class="navbar header">
       <li style="font-size: 30px;"><a href="/">The eringillingham.com</a></li>
       <li><a href="{{ url_for('addactivity') }}">Add Activity</a></li>
       <li><a href="{{ url_for('addnumbers') }}">Add Some Numbers</a></li>
@@ -21,5 +21,13 @@
   </div>
   <div class=page>
     {% block body %}{% endblock %}
+  </div>
+  <div class="foot">
+    <hr>
+    <ul class="navbar footer">
+      <li>2017 Erin Gillingham</li>
+      <li style="float: right">Site Feedback</li>
+      <li style="float: right">Sitemap</li>
+    </ul>
   </div>
 </body>

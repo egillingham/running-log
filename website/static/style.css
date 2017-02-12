@@ -62,19 +62,13 @@ hr {
 }
 
 
-/* Nav Bar styling */
-
-div.nav {
-    padding: 0px 0px 10px 0px;
-
-}
+/* All Nav Bar styling */
 
 ul.navbar {
     list-style-type: none;
     margin: 0;
     padding: 0;
     overflow: hidden;
-    background-color: #592d51;
 }
 
 ul.navbar li {
@@ -84,14 +78,46 @@ ul.navbar li {
 
 ul.navbar li a {
     display: block;
-    color: white;
     text-align: center;
-    padding: 14px 16px;
     text-decoration: none;
 }
 
-/* Change the link color on hover */
-ul.navbar li a:hover {
+/* Header styling */
+
+div.head {
+    padding: 0px 0px 10px 0px;
+}
+
+ul.navbar.header {
+    background-color: #592d51;
+}
+
+ul.navbar.header li a {
+    padding: 14px 16px;
+    color: white;
+}
+
+/* change the link color on hover */
+ul.navbar.header li a:hover {
+    background-color: #3a1d35;
+}
+
+/* Footer styling */
+.foot {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  text-align: center;
+  font-size: 12px;
+}
+
+ul.navbar.footer li {
+    padding: 0px 16px 0px 16px;
+}
+
+/* change the link color on hover */
+ul.navbar.footer li a:hover {
     background-color: #3a1d35;
 }
 
