@@ -21,3 +21,4 @@ docker_email: ""
 ## DOCKER CONFIGURE/DEPLOY
 service_destination_dir: /opt/running-log
 service_repository_root: /Users/erin/Documents/personal-dev/running-log
+env_file: running-log.env
