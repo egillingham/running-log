@@ -73,3 +73,7 @@
     - restart docker
   tags:
     - docker_config
+
+- name: docker login
+  shell: "docker login -e {{ docker_email }} -p {{ docker_pwd }} -u {{ docker_username }}"
+  become: yes
