@@ -2,6 +2,7 @@ html {
     position: relative;
     min-height: 100%;
 }
+
 body {
     padding-top: 0px;
     padding-bottom: 30px;
@@ -62,6 +63,7 @@ hr {
 }
 
 
+
 /* All Nav Bar styling */
 
 ul.navbar {
@@ -92,8 +94,17 @@ ul.navbar.header {
     background-color: #592d51;
 }
 
-ul.navbar.header li a {
+ul.navbar.header li {
     padding: 14px 16px;
+    color: white;
+}
+
+/* change the link color on hover */
+ul.navbar.header li:hover {
+    background-color: #3a1d35;
+}
+
+ul.navbar.header li a {
     color: white;
 }
 
@@ -121,6 +132,8 @@ ul.navbar.footer li a:hover {
     color: #3a1d35;
 }
 
+
+
 /* Card Pic Styling */
 
 div.card {
@@ -146,6 +159,33 @@ div.card-pic {
 div.card-txt {
     padding: 10px;
 }
+
+
+
+/* Pop-ups */
+/* Login */
+.popup {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Sit on top */
+    padding-top: 100px; /* Location of the box */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgb(0,0,0); /* Fallback color */
+    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+}
+
+.popup-content {
+    background-color: #fefefe;
+    margin: auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+}
+
 
 /* LET THE CHARTING BEGIN */
 

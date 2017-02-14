@@ -4,6 +4,7 @@
   <link rel=stylesheet type=text/css href="{{ url_for('static', filename='style.css') }}">
   <script src="https://d3js.org/d3.v4.js"></script>
   <script src="{{ url_for('static', filename='stacked_bar.js') }}"></script>
+  <script src="{{ url_for('static', filename='login.js') }}"></script>
 </head>
 <body>
   <div class="head">
@@ -15,9 +16,19 @@
       {% if session.username %}
       <li style="float: right"><a href="{{ url_for('logout') }}">Logged in as Erin</a></li>
       {% else %}
-      <li style="float: right"><a href="{{ url_for('login') }}">Login</a></li>
+      <li style="float: right" onclick="render_login('login-popup')">Login</li>
       {% endif %}
     </ul>
+  </div>
+  <div id="login-popup" class="popup">
+      <div class="popup-content">
+          <h2>Login</h2>
+          <form action="/login" method=post>
+            <div>Username: <input type=text name=username></div>
+            <div>Password: <input type=password name=password></div>
+            <div><input type=submit value=Login></div>
+          </form>
+      </div>
   </div>
   <div class=page>
     {% block body %}{% endblock %}
