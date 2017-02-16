@@ -1,10 +1,10 @@
 
 function stackedBar(data, base_class, tot_height, tot_width) {
     // data transformation
-    var activity_keys = Object.keys(activity_min[0]);
-    activity_keys.splice(activity_keys.indexOf('date'), 1);
-    var stack = d3.stack().keys(activity_keys);
-    var stacked_min = stack(activity_min);
+    var data_keys = Object.keys(data[0]);
+    data_keys.splice(data_keys.indexOf('date'), 1);
+    var stack = d3.stack().keys(data_keys);
+    var stacked_min = stack(data);
 
     // size settings
     var margin = {top: 20, right: 40, bottom: 30, left: 40};
@@ -17,8 +17,11 @@ function stackedBar(data, base_class, tot_height, tot_width) {
     var legend = chart.append("div").attr("class", "legend");
     var svg = chart.append('svg').attr('height', tot_height).attr('width', tot_width);
     var width = svg.attr("width") - margin.left - margin.right,
-        height = svg.attr("height") - margin.top - margin.bottom,
-        bar_width = (width / (activity_min.length + 2));
+        height = svg.attr("height") - margin.top - margin.bottom;
+    // define bar width using date range
+    var date_range = getDates(d3.min(data, function(d) {return new Date(Date.parse(d.date))}),
+                              d3.max(data, function(d) {return new Date(Date.parse(d.date))}));
+    var bar_width = (width / (date_range.length + 2));
     var g = svg.append("g")
         .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
@@ -35,12 +38,9 @@ function stackedBar(data, base_class, tot_height, tot_width) {
 
     var x = d3.scaleTime()
       .range([0, width])
-      // .domain(d3.extent(activity_min, function(d) {
-      //   return new Date(Date.parse(d.date));
-      // }))
-      .domain([d3.min(activity_min, function(d) {date = new Date(Date.parse(d.date)); return date.setDate(date.getDate() - 1); }),
-               d3.max(activity_min, function(d) {date = new Date(Date.parse(d.date)); return date.setDate(date.getDate() + 1); })
-                ]);
+      .domain([d3.min(data, function(d) {date = new Date(Date.parse(d.date)); return date.setDate(date.getDate() - 1); }),
+               d3.max(data, function(d) {date = new Date(Date.parse(d.date)); return date.setDate(date.getDate() + 1); })
+              ]);
 
     var layers = g.selectAll('g.layer')
       .data(stacked_min, function(d) { return d.key; })
@@ -104,4 +104,14 @@ function stackedBar(data, base_class, tot_height, tot_width) {
       .attr('class', 'legend-txt')
       .text(function(d) { return d.key; });
 
+}
+
+function getDates(startDate, stopDate) {
+    var dateArray = [];
+    var currentDate = startDate;
+    while (currentDate <= stopDate) {
+        dateArray.push(new Date(currentDate))
+        currentDate.setDate(currentDate.getDate() + 1);
+    }
+    return dateArray;
 }
