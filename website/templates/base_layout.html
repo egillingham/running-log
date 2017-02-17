@@ -20,15 +20,18 @@
       {% endif %}
     </ul>
   </div>
-  <div id="login-popup" class="popup">
-      <div class="popup-content">
-          <h2>Login</h2>
-          <form action="/login" method=post>
-            <div>Username: <input type=text name=username></div>
-            <div>Password: <input type=password name=password></div>
-            <div><input type=submit value=Login></div>
-          </form>
-      </div>
+  <div class="messages">
+      {% with messages = get_flashed_messages(with_categories=true) %}
+          {% if messages %}
+            {% for category, message in messages %}
+                {% if category == 'error' %}
+                    <div class="error">{{ message }}</div>
+                {% else %}
+                    <div class="success">{{ message }}</div>
+                {% endif %}
+            {% endfor %}
+          {% endif %}
+      {% endwith %}
   </div>
   <div class=page>
     {% block body %}{% endblock %}
