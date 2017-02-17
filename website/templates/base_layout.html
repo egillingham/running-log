@@ -16,7 +16,7 @@
       {% if session.username %}
       <li style="float: right"><a href="{{ url_for('logout') }}">Logged in as Erin</a></li>
       {% else %}
-      <li style="float: right" onclick="render_login('login-popup')">Login</li>
+      <li style="float: right" onclick="render_popup('login-popup', '/login')">Login</li>
       {% endif %}
     </ul>
   </div>

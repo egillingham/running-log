@@ -12,15 +12,15 @@ var HttpClient = function() {
     }
 }
 
-function render_login(class_to_render) {
+function render_popup(popup_id, endpoint) {
     // Get the modal
     var popUpDiv = document.createElement('div');
-    popUpDiv.setAttribute("id", "login-popup");
+    popUpDiv.setAttribute("id", popup_id);
     popUpDiv.setAttribute("class", "popup");
     popUpDiv.setAttribute("style", "display: block");
 
     var client = new HttpClient;
-    client.get('/login', function(response) {
+    client.get(endpoint, function(response) {
         var content = document.createElement('div');
         content.innerHTML = response;
 
@@ -35,7 +35,7 @@ function render_login(class_to_render) {
 
     // When the user clicks anywhere outside of the modal, close it
     window.onclick = function(event) {
-        if (event.target.id == "login-popup") {
+        if (event.target.id == popup_id) {
             event.target.outerHTML = "";
             delete event.target;
         }
