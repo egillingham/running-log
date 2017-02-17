@@ -1,0 +1,13 @@
+{% extends "base_layout.html" %}
+{% block body %}
+  <h2>Site Feedback</h2>
+  {% if error %}<div class="error">{{ error }}</div>{% endif %}
+  {% if alert %}<div class="success">{{ alert }}</div>{% endif %}
+  <div>Please let Erin know what you think of the site!</div>
+  <form id="feedbackForm" action="{{ url_for('feedback') }}" method=post>
+    <div>Email: <input type=email name=email required></div>
+    <div>Date: <input type=datetime-local name=date required></div>
+    <div><textarea rows="4" cols="50" name=feedback form="feedbackForm">Enter thoughts here...</textarea></div>
+    <div><input type=submit value="Submit Feedback"></div>
+  </form>
+{% endblock %}

@@ -4,7 +4,7 @@
   <link rel=stylesheet type=text/css href="{{ url_for('static', filename='style.css') }}">
   <script src="https://d3js.org/d3.v4.js"></script>
   <script src="{{ url_for('static', filename='stacked_bar.js') }}"></script>
-  <script src="{{ url_for('static', filename='login.js') }}"></script>
+  <script src="{{ url_for('static', filename='popup.js') }}"></script>
 </head>
 <body>
   <div class="head">
@@ -40,7 +40,7 @@
     <hr>
     <ul class="navbar footer">
       <li>2017 Erin Gillingham</li>
-      <li style="float: right">Site Feedback</li>
+      <li style="float: right" onclick="render_popup('feedback-popup', '/feedback')">Site Feedback</li>
       <li style="float: right"><a href="/sitemap.xml">Sitemap</a></li>
     </ul>
   </div>

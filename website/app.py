@@ -5,7 +5,7 @@ from flask_sitemap import Sitemap
 from werkzeug.contrib.fixers import ProxyFix
 
 # resources to load
-from resources import adding, add_activity, homepage, user_login, about_me
+from resources import adding, add_activity, homepage, user_login, about_me, feedback
 
 
 APP = Flask(__name__)
@@ -33,6 +33,7 @@ API.add_resource(add_activity.AddActivity, '/add-activity')
 API.add_resource(user_login.Login, '/login')
 API.add_resource(user_login.Logout, '/logout')
 API.add_resource(about_me.Hello, '/hello')
+API.add_resource(feedback.Feedback, '/feedback')
 
 
 @APP.route("/images/<name>")
@@ -47,7 +48,7 @@ APP.config['SITEMAP_INCLUDE_RULES_WITHOUT_PARAMS'] = True
 if __name__ == '__main__':
     print "In __main__, running host..."
     APP.secret_key = 'secret_test'
-    APP.run(host='0.0.0.0', port=5005, debug=False)
+    APP.run(host='0.0.0.0', port=5005, debug=True)
 
 elif __name__ == 'app':
     # when we run using gunicorn
