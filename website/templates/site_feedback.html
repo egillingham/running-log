@@ -3,7 +3,7 @@
   <h2>Site Feedback</h2>
   {% if error %}<div class="error">{{ error }}</div>{% endif %}
   {% if alert %}<div class="success">{{ alert }}</div>{% endif %}
-  <div>Please let Erin know what you think of the site!</div>
+  <div style="text-align: center">Please let Erin know what you think of the site!</div>
   <form id="feedbackForm" action="{{ url_for('feedback') }}" method=post>
     <div>Email: <input type=email name=email required></div>
     <div>Date: <input type=datetime-local name=date required></div>
