@@ -1,7 +1,7 @@
 import os
 from flask import Flask, url_for, render_template
 from flask_restful import Api
-from flask_sitemap import Sitemap
+from flask_sitemap_domain import Sitemap
 from werkzeug.contrib.fixers import ProxyFix
 
 # resources to load
@@ -9,7 +9,7 @@ from resources import adding, add_activity, homepage, user_login, about_me, feed
 
 
 APP = Flask(__name__)
-ext = Sitemap(app=APP)
+ext = Sitemap(app=APP, force_domain='eringillingham.com')
 
 
 class RunningLogApi(Api):
