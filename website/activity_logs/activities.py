@@ -1,3 +1,4 @@
+from datetime import datetime
 from MySQLdb import connect
 from MySQLdb import cursors
 
@@ -47,6 +48,20 @@ class Activities(object):
         '''
         data = query.select_query(select_query)
         return data
+
+    def get_weekly_mileage(self):
+        query = Query(self.conn, ACTIVITY_LOG_TABLE)
+        select_query = '''select WEEK(date, 1) as year_week, YEAR(min(date)) as year, ROUND(sum(miles),2) as miles
+        from running_log group by WEEK(date, 1);
+        '''
+        data = query.select_query(select_query)
+        mileage = []
+        # convert week and year to week date
+        for week in data:
+            date = datetime.strptime('{}-W{}-0'.format(week['year'], week['year_week']), "%Y-W%W-%w")
+            mileage.append({'miles': week['miles'], 'date': date})
+
+        return mileage
 
     def get_fields(self, table):
         query = Query(self.conn, FIELD_INFO_TABLE)
