@@ -5,7 +5,7 @@ from flask_sitemap_domain import Sitemap
 from werkzeug.contrib.fixers import ProxyFix
 
 # resources to load
-from resources import adding, add_activity, homepage, user_login, about_me, feedback
+from resources import adding, add_activity, homepage, user_login, about_me, feedback, activities
 
 
 APP = Flask(__name__)
@@ -30,6 +30,7 @@ API = RunningLogApi(APP, catch_all_404s=True)
 API.add_resource(homepage.Homepage, '/')
 API.add_resource(adding.AddNumbers, '/add')
 API.add_resource(add_activity.AddActivity, '/add-activity')
+API.add_resource(activities.Activities, '/activities')
 API.add_resource(user_login.Login, '/login')
 API.add_resource(user_login.Logout, '/logout')
 API.add_resource(about_me.Hello, '/hello')

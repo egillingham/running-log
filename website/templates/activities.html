@@ -1,0 +1,21 @@
+{% extends "base_layout.html" %}
+{% block body %}
+<h2>Running Log</h2>
+<h3>And other activities</h3>
+<div><button style="float:right" class="btn-standard btn"><a class="no-line" href="{{ url_for('addactivity') }}">
+    Add an Activity</a></button></div>
+<div>
+    <div class="chart-title">Activities per day by minute</div>
+    <div class="chart-activities-min"></div>
+</div>
+<div>
+    <div class="chart-title">Weekly Mileage</div>
+    <div class="chart-weekly-mileage"></div>
+</div>
+<script>
+var activity_min = {{ week_graph|tojson }};
+stackedBar(activity_min, 'div.chart-activities-min', "Minutes of Activity", 400, 800);
+var weekly_milage = {{ weekly_milage|tojson }};
+stackedBar(weekly_milage, 'div.chart-weekly-mileage', "Miles Run", 400, 800);
+</script>
+{% endblock %}
