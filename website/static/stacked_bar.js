@@ -1,5 +1,5 @@
 
-function stackedBar(data, base_class, tot_height, tot_width) {
+function stackedBar(data, base_class, yAxisTitle, tot_height, tot_width) {
     // data transformation
     var data_keys = Object.keys(data[0]);
     data_keys.splice(data_keys.indexOf('date'), 1);
@@ -79,7 +79,7 @@ function stackedBar(data, base_class, tot_height, tot_width) {
         .attr("dy", ".71em")
         .style("text-anchor", "end")
         .attr("fill", '#000')
-        .text("Minutes of Activity");
+        .text(yAxisTitle);
 
     g.append('g')
       .attr('class', 'x-axis')
