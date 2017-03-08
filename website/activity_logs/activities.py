@@ -58,8 +58,8 @@ class Activities(object):
         mileage = []
         # convert week and year to week date
         for week in data:
-            date = datetime.strptime('{}-W{}-0'.format(week['year'], week['year_week']), "%Y-W%W-%w")
-            mileage.append({'miles': week['miles'], 'date': date})
+            date = datetime.strptime('{}-W{}-1'.format(week['year'], week['year_week']), "%Y-W%W-%w")
+            mileage.append({'miles': week['miles'], 'date': date.strftime("%Y-%m-%d")})
 
         return mileage
 
