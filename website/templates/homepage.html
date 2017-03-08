@@ -9,6 +9,6 @@ check out the chart below showing my activity over the past week.</div>
 </div>
 <script>
 var activity_min = {{ week_graph|tojson }};
-stackedBar(activity_min, 'div.chart', 400, 800)
+stackedBar(activity_min, 'div.chart', "Minutes of Activity", 400, 800)
 </script>
 {% endblock %}
