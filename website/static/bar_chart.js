@@ -1,11 +1,12 @@
 
 function barChart(chart_data, base_class, yAxisTitle, tot_height, tot_width) {
+    // find data key name
+    var data_keys = Object.keys(chart_data[0]);
+    data_keys.splice(data_keys.indexOf('date'), 1);
+    var dkey = data_keys[0];
+
     // size settings
     var margin = {top: 20, right: 40, bottom: 30, left: 40};
-
-    // color
-    var color = d3.scaleOrdinal(["#adc698", "#61988e", "#592d51", "#eabda8"]);
-
     // char set-up
     var chart_base = d3.select(base_class);
     var chart = chart_base.append("div").attr("class", "chart").style("position", "relative");
@@ -20,8 +21,7 @@ function barChart(chart_data, base_class, yAxisTitle, tot_height, tot_width) {
     // make the damn chart
     var y = d3.scaleLinear()
       .range([height, 0])
-      // TODO make value key ambiguous
-      .domain([0, d3.max(chart_data, function(d) { return d.miles; })]);
+      .domain([0, d3.max(chart_data, function(d) { return d[dkey]; })]);
 
     var x = d3.scaleTime()
       .range([0, width])
@@ -44,11 +44,11 @@ function barChart(chart_data, base_class, yAxisTitle, tot_height, tot_width) {
             // remember that SVG is y-down while our graph is y-up!
             // here, we set the top-left of this bar segment to the
             // larger value of the pair
-            return y(d.miles);
+            return y(d[dkey]);
           }).attr('height', function(d) {
             // since we are drawing our bar from the top downwards,
             // the length of the bar is the distance between our points
-            return height - y(d.miles);
+            return height - y(d[dkey]);
           })
           .on("mouseover", function() {
             tooltip.style("display", "inline-block");
@@ -56,11 +56,11 @@ function barChart(chart_data, base_class, yAxisTitle, tot_height, tot_width) {
           .on("mouseout", function() { tooltip.style("display", "none"); })
           .on("mousemove", function(d) {
             var xPosition = d3.mouse(this)[0] - 15;
-            var yPosition = y(d.miles);
+            var yPosition = y(d[dkey]);
             tooltip.style("left", xPosition + 'px');
             tooltip.style("top", yPosition + 'px');
             tooltip.select("div.tooltip-title").text(d.date);
-            tooltip.select("div.tooltip-text").text(d.miles + " miles");
+            tooltip.select("div.tooltip-text").text(d[dkey] + " " + yAxisTitle);
           });
 
     // AXIS
