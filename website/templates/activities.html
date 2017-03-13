@@ -14,7 +14,7 @@
 </div>
 <script>
 var activity_min = {{ week_graph|tojson }};
-stackedBar(activity_min, 'div.chart-activities-min', "Minutes of Activity", 400, 800);
+stackedBar(activity_min, 'div.chart-activities-min', "minutes", 400, 800);
 var weekly_milage = {{ weekly_milage|tojson }};
 barChart(weekly_milage, 'div.chart-weekly-mileage', "miles", 400, 800);
 </script>
