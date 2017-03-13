@@ -258,6 +258,14 @@ div.tooltip-text {
     text-anchor: middle;
 }
 
+.y-axis {
+    font-size: 12px;
+}
+
+.x-axis {
+    font-size: 12px;
+}
+
 /* buttons*/
 .btn {
     border: none;
