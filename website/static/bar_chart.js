@@ -7,14 +7,12 @@ function barChart(chart_data, base_class, yAxisTitle, tot_height, tot_width) {
     var color = d3.scaleOrdinal(["#adc698", "#61988e", "#592d51", "#eabda8"]);
 
     // char set-up
-    var chart = d3.select(base_class)
-    var legend = chart.append("div").attr("class", "legend");
-    var svg = chart.append('svg').attr('height', tot_height).attr('width', tot_width);
+    var chart_base = d3.select(base_class);
+    var chart = chart_base.append("div").attr("class", "chart").style("position", "relative");
+    //var legend = chart.append("div").attr("class", "legend");
+    var svg = chart.append('svg').attr('height', tot_height).attr('width', tot_width).style("shape-rendering", "crispEdges");
     var width = svg.attr("width") - margin.left - margin.right,
         height = svg.attr("height") - margin.top - margin.bottom;
-    // define bar width using date range
-//    var date_range = getDates(d3.min(data, function(d) {return new Date(Date.parse(d.date))}),
-//                              d3.max(data, function(d) {return new Date(Date.parse(d.date))}));
     var bar_width = (width / (chart_data.length + 2));
     var g = svg.append("g")
         .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
@@ -51,6 +49,18 @@ function barChart(chart_data, base_class, yAxisTitle, tot_height, tot_width) {
             // since we are drawing our bar from the top downwards,
             // the length of the bar is the distance between our points
             return height - y(d.miles);
+          })
+          .on("mouseover", function() {
+            tooltip.style("display", "inline-block");
+            })
+          .on("mouseout", function() { tooltip.style("display", "none"); })
+          .on("mousemove", function(d) {
+            var xPosition = d3.mouse(this)[0] - 15;
+            var yPosition = y(d.miles);
+            tooltip.style("left", xPosition + 'px');
+            tooltip.style("top", yPosition + 'px');
+            tooltip.select("div.tooltip-title").text(d.date);
+            tooltip.select("div.tooltip-text").text(d.miles + " miles");
           });
 
     // AXIS
@@ -69,6 +79,25 @@ function barChart(chart_data, base_class, yAxisTitle, tot_height, tot_width) {
       .attr('class', 'x-axis')
       .attr("transform", "translate(0," + height + ")")
       .call(d3.axisBottom(x));
+
+
+    // Prep the tooltip bits, initial display is hidden
+    var tooltip = chart.append("div")
+      .attr("class", "tooltip");
+
+    tooltip.append("div")
+      .attr("class", "tooltip-title")
+      .attr("x", 15)
+      .attr("dy", "1.2em")
+      .attr("width", 50)
+      .attr("height", 50)
+
+    tooltip.append("div")
+      .attr("class", "tooltip-text")
+      .attr("x", 15)
+      .attr("dy", "1.2em")
+      .attr("width", 50)
+      .attr("height", 50)
 
 }
 

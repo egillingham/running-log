@@ -44,11 +44,6 @@ div {
     padding: 5px 10px 5px 10px;
 }
 
-div.chart-title {
-    font-weight: bold;
-    font-size: 18px;
-}
-
 div.error {
     font-size: 18px;
     font-weight: bold;
@@ -236,6 +231,31 @@ div.legend-icon {
     display: inline-block;
     vertical-align: middle;
     padding: 0px 0px 0px 0px;
+}
+
+div.chart-title {
+    font-weight: bold;
+    font-size: 18px;
+}
+
+div.tooltip {
+    border-radius: 4px;
+    -webkit-transition-duration: 0.4s; /* Safari */
+    transition-duration: 0.4s;
+    box-shadow: 0 2px 4px 0 rgba(0,0,0,0.2), 0 3px 10px 0 rgba(0,0,0,0.19);
+    position: absolute;
+    background-color: white;
+    display: none;
+    font-size: 14px;
+}
+
+div.tooltip-title {
+    text-anchor: middle;
+    font-weight: bold;
+}
+
+div.tooltip-text {
+    text-anchor: middle;
 }
 
 /* buttons*/
