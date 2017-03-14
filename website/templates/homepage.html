@@ -1,14 +1,19 @@
 {% extends "base_layout.html" %}
 {% block body %}
-<div>Hello<a href="{{ url_for('hello') }}">!</a> Welcome. If you are looking for the amazing fully-functional
-server-side adding calculator (it only adds) please <a href=" {{ url_for('addnumbers') }}">click here</a>. Otherwise,
-check out the chart below showing my activity over the past week.</div>
-<hr>
 <div>
-    <div class="chart"></div>
+    <h1 class="welcome">Welcome</h1>
+    <div class="welcome big">The main goal of this website is to make a running log for myself, but I get distracted and so there's
+        a hodgepodge of other stuff here, including the first thing I ever built, an amazing fully-functional server-side adding
+        <a class="welcome" href=" {{ url_for('addnumbers') }}">calculator</a> (it really only adds)!</div>
 </div>
 <script>
-var activity_min = {{ week_graph|tojson }};
-stackedBar(activity_min, 'div.chart', "Minutes of Activity", 400, 800)
+var d = new Date();
+var n = d.getMinutes();
+if (n % 2 == 0) {
+    var background_image = "{{ url_for('static', filename='images/sb-evening.jpg') }}";
+} else {
+    var background_image = "{{ url_for('static', filename='images/sierras.jpg') }}";
+}
+add_background_image(background_image);
 </script>
 {% endblock %}

@@ -8,9 +8,7 @@ class Homepage(Resource):
 
     def __init__(self):
         self.header = {'Content-Type': 'text/html'}
-        self.activities = activities.Activities()
 
     def get(self):
-        week_graph = self.activities.get_activities()
-        template = render_template('homepage.html', week_graph=week_graph)
+        template = render_template('homepage.html', welcome=True)
         return make_response(template, 200, self.header)
