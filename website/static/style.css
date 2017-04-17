@@ -268,7 +268,7 @@ div.chart-title {
     font-size: 18px;
 }
 
-div.tooltip {
+div#tooltip {
     border-radius: 2px;
     -webkit-transition-duration: 0.4s; /* Safari */
     transition-duration: 0.4s;
@@ -277,6 +277,7 @@ div.tooltip {
     background-color: white;
     display: none;
     font-size: 14px;
+    pointer-events: none;
 }
 
 div.tooltip-title {
