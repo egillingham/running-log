@@ -23,8 +23,8 @@ function stackedBar(data, base_class, yAxisTitle, tot_height, tot_width) {
     var width = svg.attr("width") - margin.left - margin.right,
         height = svg.attr("height") - margin.top - margin.bottom;
     // define bar width using date range
-    var date_range = getDates(d3.min(data, function(d) {return new Date(Date.parse(d.date))}),
-                              d3.max(data, function(d) {return new Date(Date.parse(d.date))}));
+    var date_range = getDates(d3.min(data, function(d) {return new Date(parseDate(d.date))}),
+                              d3.max(data, function(d) {return new Date(parseDate(d.date))}));
     var bar_width = (width / (date_range.length + 2));
     var g = svg.append("g")
         .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
@@ -43,8 +43,8 @@ function stackedBar(data, base_class, yAxisTitle, tot_height, tot_width) {
     var x = d3.scaleTime()
       .range([0, width])
       // TODO: make date buffers dynamic to range of data
-      .domain([d3.min(data, function(d) {date = new Date(Date.parse(d.date)); return date.setDate(date.getDate() - 1); }),
-               d3.max(data, function(d) {date = new Date(Date.parse(d.date)); return date.setDate(date.getDate() + 1); })
+      .domain([d3.min(data, function(d) {date = new Date(parseDate(d.date)); return date.setDate(date.getDate() - 1); }),
+               d3.max(data, function(d) {date = new Date(parseDate(d.date)); return date.setDate(date.getDate() + 1); })
               ]);
 
     var layers = g.selectAll('g.layer')
@@ -61,7 +61,7 @@ function stackedBar(data, base_class, yAxisTitle, tot_height, tot_width) {
           .attr("class", "bar")
           .attr('rx', '1.5')
           .attr('ry', '1.5')
-          .attr('x', function(d) { return x(new Date(Date.parse(d.data.date))) - bar_width / 2; })
+          .attr('x', function(d) { return x(new Date(parseDate(d.data.date))) - bar_width / 2; })
           .attr('width', bar_width)
           .attr('y', function(d) {
             // remember that SVG is y-down while our graph is y-up!
@@ -83,7 +83,7 @@ function stackedBar(data, base_class, yAxisTitle, tot_height, tot_width) {
           .on("mousemove", function(d) {
             var xPosition = d3.mouse(this)[0] - 15;
             var yPosition = y(d[1]);
-            var cur_date = new Date(d.data.date);
+            var cur_date = new Date(parseDate(d.data.date));
             var tool_text = '';
             for (var k in data_keys) {
                 if (d.data[data_keys[k]] != null) {

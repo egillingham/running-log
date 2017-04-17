@@ -26,8 +26,8 @@ function barChart(chart_data, base_class, yAxisTitle, tot_height, tot_width) {
     var x = d3.scaleTime()
       .range([0, width])
       // TODO: make date buffers dynamic to range of data
-      .domain([d3.min(chart_data, function(d) {date = new Date(Date.parse(d.date)); return date.setDate(date.getDate() - 7); }),
-               d3.max(chart_data, function(d) {date = new Date(Date.parse(d.date)); return date.setDate(date.getDate() + 7); })
+      .domain([d3.min(chart_data, function(d) {date = new Date(parseDate(d.date)); return date.setDate(date.getDate() - 7); }),
+               d3.max(chart_data, function(d) {date = new Date(parseDate(d.date)); return date.setDate(date.getDate() + 7); })
               ]);
 
     g.selectAll('rect.bar')
@@ -38,7 +38,7 @@ function barChart(chart_data, base_class, yAxisTitle, tot_height, tot_width) {
           .attr('fill', "#adc698")
           .attr('rx', '1.5')
           .attr('ry', '1.5')
-          .attr('x', function(d) { return x(new Date(Date.parse(d.date))) - bar_width / 2; })
+          .attr('x', function(d) { return x(new Date(parseDate(d.date))) - bar_width / 2; })
           .attr('width', bar_width)
           .attr('y', function(d) {
             // remember that SVG is y-down while our graph is y-up!
