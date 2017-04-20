@@ -63,6 +63,20 @@ class Activities(object):
 
         return mileage
 
+    def get_weekly_num_runs(self):
+        query = Query(self.conn, ACTIVITY_LOG_TABLE)
+        select_query = '''select WEEK(date, 1) as year_week, YEAR(min(date)) as year, count(*) as num_runs
+        from running_log group by WEEK(date, 1);
+        '''
+        data = query.select_query(select_query)
+        num_runs = []
+        # convert week and year to week date
+        for week in data:
+            date = datetime.strptime('{}-W{}-1'.format(week['year'], week['year_week']), "%Y-W%W-%w")
+            num_runs.append({'num_runs': week['num_runs'], 'date': date.strftime("%Y-%m-%d")})
+
+        return num_runs
+
     def get_fields(self, table):
         query = Query(self.conn, FIELD_INFO_TABLE)
         field_info_fields = ['field']

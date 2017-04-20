@@ -13,5 +13,7 @@ class Activities(Resource):
     def get(self):
         week_graph = self.activities.get_activities()
         weekly_milage = self.activities.get_weekly_mileage()
-        template = render_template('activities.html', week_graph=week_graph, weekly_milage=weekly_milage)
+        num_runs = self.activities.get_weekly_num_runs()
+        template = render_template('activities.html', week_graph=week_graph, weekly_milage=weekly_milage,
+                                   num_runs=num_runs)
         return make_response(template, 200, self.header)

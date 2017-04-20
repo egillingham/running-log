@@ -12,10 +12,16 @@
     <div class="chart-title">Weekly Mileage</div>
     <div class="chart-weekly-mileage"></div>
 </div>
+<div>
+    <div class="chart-title">Number of Runs per Week</div>
+    <div class="chart-weekly-num-runs"></div>
+</div>
 <script>
 var activity_min = {{ week_graph|tojson }};
 stackedBar(activity_min, 'div.chart-activities-min', "minutes", 400, 800);
 var weekly_milage = {{ weekly_milage|tojson }};
 barChart(weekly_milage, 'div.chart-weekly-mileage', "miles", 400, 800);
+var weekly_num_runs = {{ num_runs|tojson }};
+barChart(weekly_num_runs, 'div.chart-weekly-num-runs', "runs", 400, 800);
 </script>
 {% endblock %}
