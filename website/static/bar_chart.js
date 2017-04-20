@@ -1,5 +1,5 @@
 
-function barChart(chart_data, base_class, yAxisTitle, tot_height, tot_width) {
+function barChart(chart_data, base_class, yAxisTitle, tot_height, tot_width, color) {
     // find data key name
     var data_keys = Object.keys(chart_data[0]);
     data_keys.splice(data_keys.indexOf('date'), 1);
@@ -35,7 +35,7 @@ function barChart(chart_data, base_class, yAxisTitle, tot_height, tot_width) {
       .enter()
         .append('rect')
           .attr("class", "bar")
-          .attr('fill', "#adc698")
+          .attr('fill', "#" + color)
           .attr('rx', '1.5')
           .attr('ry', '1.5')
           .attr('x', function(d) { return x(new Date(parseDate(d.date))) - bar_width / 2; })

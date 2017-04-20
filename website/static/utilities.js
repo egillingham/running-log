@@ -20,9 +20,11 @@ function render_charts(chart_data) {
     for (i = 0; i < chart_data.length; i++) {
         chart = chart_data[i];
         if (chart['chart_type'] == 'stacked_bar') {
-            stackedBar(chart['data'], 'div.chart-' + chart['id'], chart['axis_title'], chart['chart_height'], chart['chart_width']);
+            stackedBar(chart['data'], 'div.chart-' + chart['id'], chart['axis_title'], chart['chart_height'],
+            chart['chart_width']);
         } else if (chart['chart_type'] == 'bar_chart') {
-            barChart(chart['data'], 'div.chart-' + chart['id'], chart['axis_title'], chart['chart_height'], chart['chart_width']);
+            barChart(chart['data'], 'div.chart-' + chart['id'], chart['axis_title'], chart['chart_height'],
+            chart['chart_width'], chart['color']);
         }
     }
 }
