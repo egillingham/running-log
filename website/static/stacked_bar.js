@@ -75,10 +75,10 @@ function stackedBar(data, base_class, yAxisTitle, tot_height, tot_width) {
             return y(d[0]) - y(d[1]);
           })
           .on("mouseover", function() {
-            d3.select("#tooltip").transition().delay(2).style("opacity", 1)
+            chart.select(".tooltip").transition().delay(2).style("opacity", 1)
             })
           .on("mouseout", function() {
-            d3.select("#tooltip").transition().delay(2).style("opacity", 0);
+            chart.select(".tooltip").transition().delay(2).style("opacity", 0);
             })
           .on("mousemove", function(d) {
             var xPosition = d3.mouse(this)[0] - 15;
@@ -134,7 +134,7 @@ function stackedBar(data, base_class, yAxisTitle, tot_height, tot_width) {
 
     // Prep the tooltip bits, initial display is hidden
     var tooltip = chart.append("div")
-      .attr("id", "tooltip")
+      .attr("class", "tooltip")
       .style("display", "inline-block")
       .style("opacity", 0);
 
