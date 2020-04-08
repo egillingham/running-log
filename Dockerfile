@@ -1,4 +1,4 @@
-FROM python:2.7
+FROM python:3.7
 MAINTAINER Erin <e.gillingham9@gmail.com>
 
 RUN mkdir -p /var/log/gunicorn/ && mkdir /opt/website

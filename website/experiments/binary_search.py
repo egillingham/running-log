@@ -13,7 +13,7 @@ def numeric_binary_search(num, array):
     while low <= high:
 
         mid = (high + low) / 2
-        print 'high: {}, low: {}, array[{}]={}'.format(high, low, mid, array[mid])
+        print(1)
 
         if array[mid] == num:
             idx = mid
@@ -39,7 +39,7 @@ def letter_binary_search(letter, array):
     while low <= high:
 
         mid = (high + low) / 2
-        print 'high: {}, low: {}, array[{}]={}'.format(high, low, mid, array[mid])
+        print(1)
 
         if ALPHABET.get(array[mid]) == letter_num:
             idx = mid
@@ -61,7 +61,7 @@ def string_binary_search(word, array):
     while low <= high:
 
         mid = (low + high) / 2
-        print 'high: {}, low: {}, array[{}]={}'.format(high, low, mid, array[mid])
+        print(1)
 
         if array[mid] == word:
             idx = mid
@@ -87,6 +87,7 @@ def string_binary_search(word, array):
 
     return idx
 
+
 if __name__ == '__main__':
     test = [1, 2, 3, 4, 5, 6, 8, 9, 10, 11, 12, 13, 14]
     #location = numeric_binary_search(14, test)
@@ -94,4 +95,4 @@ if __name__ == '__main__':
     #location = letter_binary_search('e', letter_test)
     words_test = ['apple', 'bananas', 'erin', 'erin is cool', 'llama', 'llamas', 'rat', 'yoyo', 'zoo']
     location = string_binary_search('erin is cool', words_test)
-    print location
+    print(1)

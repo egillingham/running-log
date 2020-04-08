@@ -11,5 +11,5 @@ class Hello(Resource):
 
     def get(self):
         cards = image_cards.get_image_cards()
-        template = render_template('about_me.html', cards=cards)
+        template = render_template('about_me.html', cards=list(cards))
         return make_response(template, 200, self.header)

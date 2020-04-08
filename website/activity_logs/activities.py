@@ -1,6 +1,5 @@
 from datetime import datetime
-from MySQLdb import connect
-from MySQLdb import cursors
+from pymysql import connect, cursors
 
 from utilities.creds import mysql_creds
 from utilities.mysql_query import Query

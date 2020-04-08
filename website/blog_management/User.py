@@ -1,5 +1,4 @@
-from MySQLdb import connect
-from MySQLdb import cursors
+from pymysql import connect, cursors
 from passlib.apps import custom_app_context as pwd_context
 
 from utilities.creds import mysql_creds

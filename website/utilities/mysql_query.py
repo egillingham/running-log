@@ -1,4 +1,4 @@
-import MySQLdb
+import pymysql
 import datetime
 import re
 import sys
@@ -11,7 +11,7 @@ class Query(object):
                     'tinyblob', 'tinytext', 'mediumblob', 'mediumtext', 'longblob', 'longtext']
     NUMBER_TYPES = ['int', 'float', 'double', 'decimal', 'tinyint', 'smallint', 'mediumint', 'bigint']
 
-    def __init__(self, conn, table):
+    def __init__(self, conn: pymysql.Connection, table: str):
         self.conn = conn
         self.table = table
         # used to cache field info for multiple queries to same table
@@ -22,13 +22,13 @@ class Query(object):
     def connect_to_db(self, db, create_if_missing=False):
         try:
             self.conn.select_db(db)
-        except MySQLdb.DatabaseError:
+        except pymysql.DatabaseError:
             if create_if_missing:
                 query = 'CREATE DATABASE IF NOT EXISTS {}'.format(db)
                 self.execute_query(query)
                 self.conn.select_db(db)
             else:
-                raise MySQLdb.DatabaseError
+                raise pymysql.DatabaseError
 
     def select_query(self, query):
         with self.conn as cur:
@@ -203,10 +203,10 @@ class Query(object):
         fields = self.get_table_field_types()
         ft, vl = self.create_fields_values_for_query(data, fields)
 
-        values = u', '.join(vl)
-        fields = u'({})'.format(u', '.join(ft))
+        values = ', '.join(vl)
+        fields = '({})'.format(u', '.join(ft))
 
-        query = u"INSERT INTO {} {} VALUES {}".format(self.table, fields, values)
+        query = "INSERT INTO {} {} VALUES {}".format(self.table, fields, values)
         self.execute_query(query)
 
     def create_fields_values_for_query(self, data, field_info):
@@ -216,7 +216,7 @@ class Query(object):
         :return: ft contains tuple of fields; vl are the values in a list (rows) of tuples (row)
         """
         # set fields as fields from the first row
-        fields = data[0].keys()
+        fields = list(data[0].keys())
         values = []
         for row in data:
             row_values = []
@@ -229,13 +229,12 @@ class Query(object):
 
                 if value:
                     if isinstance(value, datetime.datetime):
-                        value = u'"{}"'.format(value.strftime('%Y-%m-%d %H:%M:%S'))
+                        value = '"{}"'.format(value.strftime('%Y-%m-%d %H:%M:%S'))
                     elif isinstance(value, list):
-                        value = u'^'.join(value)
+                        value = '^'.join(value)
                     elif info.get('type') in self.STRING_TYPES:
-                        value = unicode(value)
                         value = value.replace('"', "'")
-                        value = u'"{}"'.format(value.encode('utf-8'))
+                        value = '"{}"'.format(value)
                     elif info.get('type') in self.NUMBER_TYPES:
                         value = str(value)
                 else:
@@ -246,6 +245,6 @@ class Query(object):
 
                 row_values.append(value)
 
-            values.append(u'({})'.format(u', '.join(row_values)))
+            values.append('({})'.format(', '.join(row_values)))
 
         return fields, values
