@@ -1,0 +1,28 @@
+{% extends "base_layout.html" %}
+{% block body %}
+<h2>Results for {{ group_name }}</h2>
+{% if error %}<div class="error">{{ error }}</div>{% endif %}
+{% if alert %}<div class="success">{{ alert }}</div>{% endif %}
+<h3>Leader: {{ scoreboard.leader_name }} - {{ scoreboard.leader_count }} win{% if scoreboard.leader_count > 1 %}s{% endif %}</h3>
+<h3>Biggest Loser: {{ scoreboard.loser_name }} - {{ scoreboard.loser_count }} loss{% if scoreboard.loser_count > 1 %}es{% endif %}</h3>
+<div>
+  <table>
+    <tr>
+      <th>Date</th>
+      <th>{{ player_1 }}</th>
+      <th>{{ player_2 }}</th>
+      <th>{{ player_3 }}</th>
+      <th>{{ player_4 }}</th>
+    </tr>
+    {% for date, result in results.items() %}
+    <tr>
+      <td>{{ date }}</td>
+      <td>{{ result.get(player_1) }}</td>
+      <td>{{ result.get(player_2) }}</td>
+      <td>{{ result.get(player_3) }}</td>
+      <td>{{ result.get(player_4) }}</td>
+    </tr>
+    {% endfor %}
+  </table>
+</div>
+{% endblock %}

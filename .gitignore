@@ -12,10 +12,6 @@
 *.log
 *.env
 
-#hey you can't have my creds
-creds.py
-creds.pyc
-
 # freakin' mac
 .DS_Store
 

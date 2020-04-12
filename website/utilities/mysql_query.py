@@ -1,7 +1,6 @@
 import pymysql
 import datetime
 import re
-import sys
 
 
 class Query(object):
@@ -30,7 +29,7 @@ class Query(object):
             else:
                 raise pymysql.DatabaseError
 
-    def select_query(self, query):
+    def select_query(self, query) -> list:
         with self.conn as cur:
             cur.execute(query)
             rows = cur.fetchall()
@@ -50,15 +49,14 @@ class Query(object):
         if not table:
             self.execute_query(create_table_syntax)
 
-    def select(self, fields, where=None, limit=None, order_by=None, batch_query=False):
+    def select(self, fields, where=None, limit=None, order_by=None) -> list:
         """
         generate and executes select query
         :param fields: list of fields to select
         :param where: where query, without the 'where' text
         :param limit: optional limit to the query
         :param order_by: optional order by in list format [field, direction]
-        :param batch_query: boolean option to batch query or not
-        :return: a generator to be used in a loop
+        :return: list of result rows
         """
         # max execution time of 10 seconds: avoids query killer and
         # also who wants a query running longer than 10 seconds anyways
@@ -68,69 +66,10 @@ class Query(object):
         if order_by:
             query = u"{} ORDER BY {}".format(query, self.create_order_by(order_by))
 
-        # if you don't want a batched query, just run the query
-        if not batch_query:
-            if limit:
-                query = u"{} LIMIT {}".format(query, limit)
+        if limit:
+            query = u"{} LIMIT {}".format(query, limit)
 
-            rows = self.select_query(query)
-            for row in rows:
-                yield row
-
-        # else continue on and batch your query
-        else:
-            # Find the size of 1 row, and get rows less than byte_limit
-            batch_size = self._get_batch_size(query)
-            offset = 0
-
-            # if limit is smaller than batch_size, no need to batch
-            if limit and limit < batch_size:
-                query = u"{} LIMIT {}".format(query, limit)
-                rows = self.select_query(query)
-                for row in rows:
-                    yield row
-            else:
-                # rewrite query with limit and offset
-                rewritten_query = u'{} LIMIT {} OFFSET {}'.format(query, batch_size, offset)
-                rows = self.select_query(rewritten_query)
-
-                while rows and self.test_if_limit_hit(limit, offset):
-                    # close and open the cursor for each batch
-                    for row in rows:
-                        yield row
-                    offset += batch_size
-                    rewritten_query = u'{} LIMIT {} OFFSET {}'.format(query, batch_size, offset)
-                    rows = self.select_query(rewritten_query)
-
-    def _get_batch_size(self, query):
-        """
-        (Private) Method to calculate the appropriate offset count without reading too many rows at once
-        :param query:
-        :return batch_size:
-        """
-        # limit 10 because mysql isn't using an index sometimes with a limit of 1
-        temp_query = u'{} LIMIT {} OFFSET {}'.format(query, 10, 0)
-        with self.conn as cur:
-            cur.execute(temp_query)
-            row = cur.fetchone()
-
-        if not row:
-            # if no rows exit now
-            return None
-
-        size_of_one = sys.getsizeof(row)
-        # intended to be rounded - can't do anything with floats
-        # TODO: cast if run with python3
-        batch_size = self.byte_limit / size_of_one
-        return batch_size
-
-    def test_if_limit_hit(self, limit, offset):
-        if limit is None:
-            return True
-        elif limit > offset:
-            return True
-        else:
-            return False
+        return self.select_query(query)
 
     def create_order_by(self, order_by):
         if isinstance(order_by[0], list):

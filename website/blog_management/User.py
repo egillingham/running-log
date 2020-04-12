@@ -19,7 +19,7 @@ class User(object):
 
     def validate_username(self):
         valid = False
-        if isinstance(self.username, basestring):
+        if isinstance(self.username, str):
             valid = True
         return valid
 
