@@ -1,3 +1,4 @@
+from datetime import datetime
 from pymysql import connect, cursors
 
 from utilities.creds import mysql_creds
@@ -10,7 +11,9 @@ class Group(object):
         self.conn = connect(host=mysql_creds['host'], port=mysql_creds['port'], user=mysql_creds['user'],
                             passwd=mysql_creds['password'], db='hearts', cursorclass=cursors.DictCursor)
         self.name = name
-        self._id = self.get_group_id()
+        self._id = None
+        self._code = None
+        self.set_group_info()
         self.group_where = "group_id = {}".format(self._id)
         self._players = None
 
@@ -20,12 +23,16 @@ class Group(object):
         self.loser_count = 0
         self.point_breakdown_day = {}
 
-    def get_group_id(self) -> int:
+    def set_group_info(self):
         groups_q = Query(self.conn, table='groups')
-        groups = groups_q.select(["id", "name"], where="name = '{}'".format(self.name))
+        groups = groups_q.select(["id", "code"], where="name = '{}'".format(self.name))
         if not groups or len(groups) != 1:
             raise Exception("Group {} does not exist".format(groups))
-        return int(groups[0].get("id"))
+        self._id = int(groups[0].get("id"))
+        self._code = groups[0].get("code")
+
+    def is_valid_code(self, code: str) -> bool:
+        return code == self._code
 
     def get_scoreboard(self) -> dict:
         return {"leader_name": self.leader, "leader_count": self.leader_count,
@@ -62,3 +69,23 @@ class Group(object):
             date_details = self.point_breakdown_day.get(date_str, {})
             date_details[games_player.get("username")] = games_player.get("points")
             self.point_breakdown_day[date_str] = date_details
+
+    def add_game(self, date: datetime, player_results: dict, notes: str = None):
+        game_winner = min(player_results, key=lambda key: player_results[key])
+        game_loser = max(player_results, key=lambda key: player_results[key])
+        self._add_game_result(date, game_winner, game_loser, notes)
+        self._add_player_result(date, player_results)
+
+    def _add_player_result(self, date: datetime, player_results: dict):
+        data = []
+        for player, points in player_results.items():
+            data.append({"date": date, "group_id": self._id, "username": player, "points": points})
+        games_players_q = Query(self.conn, table='games_players')
+        games_players_q.insert_update(data)
+
+    def _add_game_result(self, date: datetime, winner: str, loser: str, notes: str = None):
+        games_q = Query(self.conn, table='games')
+        game = {"date": date, "group_id": self._id, "winner": winner, "loser": loser}
+        if notes:
+            game["notes"] = notes
+        games_q.insert_update([game])

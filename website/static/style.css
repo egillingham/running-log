@@ -128,6 +128,10 @@ table th {
   color: white;
 }
 
+.formfield * {
+  vertical-align: middle;
+}
+
 /* All Nav Bar styling */
 
 ul.navbar {

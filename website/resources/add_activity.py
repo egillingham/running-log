@@ -18,7 +18,6 @@ class AddActivity(Resource):
         return make_response(template, 200, self.header)
 
     def post(self):
-        test = session.get('logged_in')
         if request.form:
             param = request.form
             # to dict "flattens" the form- may lose a value if duplicate keys. Not really sure how that would happen.

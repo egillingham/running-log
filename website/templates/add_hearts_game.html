@@ -1,0 +1,28 @@
+{% extends "base_layout.html" %}
+{% block body %}
+  <h2>Add Game for {{ group_name }}</h2>
+  {% if error %}<div class="error">{{ error }}</div>{% endif %}
+  {% if alert %}<div class="success">{{ alert }}</div>{% endif %}
+  <form action="{{ group_url }}" method=post>
+    <div class="formfield">
+      <label for=code>Group Code:</label>
+      <input type=text id=code name=code>
+    </div>
+    <hr>
+    <div class="formfield">
+      <label for=date>Date:</label>
+      <input type=date id=date name=date>
+    </div>
+    {% for player in players %}
+    <div>
+      {{ player[0]|upper }}{{ player[1:] }} Score: <input type=number name=player_{{loop.index}}_score step=1>
+      <input name=player_{{loop.index}} step=1 type=hidden value="{{ player }}">
+    </div>
+    {% endfor %}
+    <div class="formfield">
+      <label for="notes">Notes:</label>
+      <textarea id="notes" name="notes" rows="3" cols="50"></textarea>
+    </div>
+    <div><input type=submit value="Add Game"></div>
+  </form>
+{% endblock %}

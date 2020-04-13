@@ -166,7 +166,7 @@ class Query(object):
                 value = row.get(field)
                 info = field_info.get(field)
 
-                if value:
+                if value is not None:
                     if isinstance(value, datetime.datetime):
                         value = '"{}"'.format(value.strftime('%Y-%m-%d %H:%M:%S'))
                     elif isinstance(value, list):
