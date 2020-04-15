@@ -2,7 +2,7 @@
 <head>
   <title>The eringillingham.com</title>
   <link rel="shortcut icon" href="{{ url_for('static', filename='images/erin-posing.png') }}">
-  <link rel=stylesheet type=text/css href="{{ url_for('static', filename='style.css') }}?build=1">
+  <link rel=stylesheet type=text/css href="{{ url_for('static', filename='style.css') }}?build=2">
   <script src="https://d3js.org/d3.v4.js"></script>
   <script src="{{ url_for('static', filename='stacked_bar.js') }}"></script>
   <script src="{{ url_for('static', filename='bar_chart.js') }}"></script>
@@ -24,6 +24,7 @@
       <li style="font-size: 30px;"><a href="/">The eringillingham.com</a></li>
       <li><a href="{{ url_for('activities') }}">Running Log</a></li>
       <li><a href="{{ url_for('addnumbers') }}">Add Some Numbers</a></li>
+      <li><a href="{{ url_for('hearts') }}">Hearts</a></li>
       <li><a href="{{ url_for('hello') }}">Hello</a></li>
       {% if session.username %}
       <li style="float: right"><a href="{{ url_for('logout') }}">Logged in as Erin</a></li>

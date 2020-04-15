@@ -9,7 +9,7 @@ from werkzeug.middleware.proxy_fix import ProxyFix
 
 # resources to load
 from resources import adding, add_activity, homepage, user_login, about_me, feedback, activities, \
-    hearts_groups, hearts_game
+    hearts_group, hearts_game, hearts
 
 
 APP = Flask(__name__)
@@ -21,9 +21,9 @@ class RunningLogApi(Api):
         LOGGER.error('FATAL ERROR: {}'.format(e))
         LOGGER.exception(e)
         code = getattr(e, 'code', 500)
-        # if code == 500:      # for HTTP 500 errors return my custom response
-        #     error_msg = "Erin did something wrong. Please grab a pitchfork and run her out of town."
-        #     return render_template('500.html', error=error_msg), 500
+        if code == 500:      # for HTTP 500 errors return my custom response
+            error_msg = "Erin did something wrong. Please grab a pitchfork and run her out of town."
+            return render_template('500.html', error=error_msg), 500
         if code == 404:
             error_msg = "This page doesn't exist yet silly. Send Erin a venmo if it's something you really want to see."
             return render_template('404.html', error=error_msg), 404
@@ -41,7 +41,8 @@ API.add_resource(user_login.Login, '/login')
 API.add_resource(user_login.Logout, '/logout')
 API.add_resource(about_me.Hello, '/hello')
 API.add_resource(feedback.Feedback, '/feedback')
-API.add_resource(hearts_groups.HeartsGroup, '/hearts/group/<string:group_name>')
+API.add_resource(hearts.Hearts, '/hearts')
+API.add_resource(hearts_group.HeartsGroup, '/hearts/group/<string:group_name>')
 API.add_resource(hearts_game.HeartsGame, '/hearts/game/<string:group_name>')
 
 

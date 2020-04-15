@@ -1,8 +1,49 @@
 from datetime import datetime
 from pymysql import connect, cursors
+from flask import url_for
 
 from utilities.creds import mysql_creds
 from utilities.mysql_query import Query
+
+
+class Groups(object):
+
+    def __init__(self):
+        self.conn = connect(host=mysql_creds['host'], port=mysql_creds['port'], user=mysql_creds['user'],
+                            passwd=mysql_creds['password'], db='hearts', cursorclass=cursors.DictCursor)
+
+        self.groups = self._get_groups()
+
+    def _get_groups(self):
+        groups_q = Query(self.conn, table='groups')
+        groups = groups_q.select(["name", "id"])
+        return groups
+
+    def get_group_info(self):
+        group_info = []
+        for group in self.groups:
+            url = url_for('heartsgroup', group_name=group.get("name"))
+            games_q = Query(self.conn, table='games')
+            games = games_q.select_count_star("games_played", where="group_id = {}".format(group.get("id")))
+            group_info.append({"name": group.get("name"), "url": url, "games_played": games.get("games_played")})
+        return group_info
+
+    def get_weekly_games_played(self):
+        query = Query(self.conn, 'games')
+        select_query = '''SELECT WEEK(date, 1) as year_week, YEAR(min(date)) as year, count(*) as games_played
+        FROM games GROUP BY WEEK(date, 1);
+        '''
+        data = query.select_query(select_query)
+        num_games_played = []
+        # convert week and year to week date
+        for week in data:
+            date = datetime.strptime('{}-W{}-1'.format(week['year'], week['year_week']), "%Y-W%W-%w")
+            num_games_played.append({'games_played': week['games_played'], 'date': date.strftime("%Y-%m-%d")})
+        return num_games_played
+
+    def losses_by_player(self, username):
+        query = Query(self.conn, 'games')
+        return query.select(['date', "1 as count"], where='loser = "{}"'.format(username))
 
 
 class Group(object):
@@ -50,6 +91,8 @@ class Group(object):
     def calculate_scoreboard(self):
         games_q = Query(self.conn, table='games')
         games = games_q.select(["date", "winner", "loser"], where=self.group_where)
+        if not games:
+            return
         leaderboard = {}
         loserboard = {}
         for game in games:

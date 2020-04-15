@@ -1,0 +1,26 @@
+{% extends "base_layout.html" %}
+{% block body %}
+<h2>Hearts Groups</h2>
+<div>
+    <h3>View Hearts Groups</h3>
+    <div>
+        {% for group in groups %}
+        <div class="header">
+            <a href="{{ group.url }}">{{ group.name }}</a> - {{ group.games_played }} games played
+        </div>
+        {% endfor %}
+    </div>
+</div>
+<hr>
+<h3>View the Data</h3>
+{% for chart in charts %}
+<div>
+    <div class="chart-title">{{ chart.title }}</div>
+    <div class="chart-{{ chart.id }}"></div>
+</div>
+{% endfor %}
+<script>
+var chart_data = {{ charts|tojson }};
+render_charts(chart_data);
+</script>
+{% endblock %}

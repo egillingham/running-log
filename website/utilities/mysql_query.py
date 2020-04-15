@@ -49,6 +49,16 @@ class Query(object):
         if not table:
             self.execute_query(create_table_syntax)
 
+    def select_count_star(self, count_field, fields=None, where=None) -> list:
+        query = "SELECT count(*) as {}".format(count_field)
+        if fields:
+            query = "{}, {}".format(query, ", ".join(fields))
+        query = "{} FROM {}".format(query, self.table)
+        if where:
+            query = "{} WHERE {}".format(query, where)
+        count = self.select_query(query)
+        return count[0] if len(count) > 0 else {}
+
     def select(self, fields, where=None, limit=None, order_by=None) -> list:
         """
         generate and executes select query
@@ -60,14 +70,14 @@ class Query(object):
         """
         # max execution time of 10 seconds: avoids query killer and
         # also who wants a query running longer than 10 seconds anyways
-        query = u"SELECT {} FROM {}".format(u', '.join(fields), self.table)
+        query = "SELECT {} FROM {}".format(', '.join(fields), self.table)
         if where:
-            query = u"{} WHERE {}".format(query, where)
+            query = "{} WHERE {}".format(query, where)
         if order_by:
-            query = u"{} ORDER BY {}".format(query, self.create_order_by(order_by))
+            query = "{} ORDER BY {}".format(query, self.create_order_by(order_by))
 
         if limit:
-            query = u"{} LIMIT {}".format(query, limit)
+            query = "{} LIMIT {}".format(query, limit)
 
         return self.select_query(query)
 

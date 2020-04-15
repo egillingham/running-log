@@ -3,6 +3,7 @@
 <h2>Results for {{ group_name }}</h2>
 {% if error %}<div class="error">{{ error }}</div>{% endif %}
 {% if alert %}<div class="success">{{ alert }}</div>{% endif %}
+{% if results %}
 <h3>Leader: {{ scoreboard.leader_name }} - {{ scoreboard.leader_count }} win{% if scoreboard.leader_count > 1 %}s{% endif %}</h3>
 <h3>Biggest Loser: {{ scoreboard.loser_name }} - {{ scoreboard.loser_count }} loss{% if scoreboard.loser_count > 1 %}es{% endif %}</h3>
 <div>
@@ -25,6 +26,9 @@
     {% endfor %}
   </table>
 </div>
+{% else %}
+<div>No games have been played</div>
+{% endif %}
 <div>
   <div><button class="btn-standard btn"><a class="no-line" href="{{ addurl }}">
     Add Game</a></button></div>

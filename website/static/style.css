@@ -60,6 +60,12 @@ div.big {
     font-size: 18px;
 }
 
+div.header {
+    font-size: 18px;
+    text-align: center;
+    font-weight: bold;
+}
+
 div.welcome {
     color: #fff;
     padding: 5px 50px 5px 50px;
