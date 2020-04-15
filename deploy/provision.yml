@@ -1,7 +1,0 @@
----
-- hosts: 52.24.35.116
-  become: yes
-  become_method: sudo
-
-  roles:
-    - { role: docker, tags: ['docker'] }
