@@ -20,8 +20,7 @@ def insert_site_feedback(feedback):
         return False, 'Did not include all needed information'
     # check to see if feedback already given today
     today_feedback = q.select(['id'], where='email = "{}" and DATE(`date`) = DATE("{}")'.format(email, date))
-    first_feedback = next(today_feedback, None)
-    if first_feedback:
+    if len(today_feedback) > 0:
         return False, 'You can only give feedback once a day'
     # insert feedback
     q.insert([feedback])

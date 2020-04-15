@@ -42,7 +42,9 @@ class User(object):
     def get_user_by_username(self):
         query = Query(self.conn, self.USER_TABLE)
         rows = query.select(['id', 'password', 'username'], where='username = "{}"'.format(self.username))
-        user_info = next(rows, [])
+        if len(rows) != 1:
+            raise Exception("Unable to get user info for {}".format(self.username))
+        user_info = rows[0]
         self.hash_pass = user_info.get('password')
         return user_info
 
